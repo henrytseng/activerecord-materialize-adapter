@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+cd $SCRIPT_DIR/..
+
+mkdir -p tmp/
+for i in $(seq 100); do
+  curl --max-time 9999999 -N https://stream.wikimedia.org/v2/stream/recentchange >> tmp/wikirecent
+done

@@ -1,0 +1,45 @@
+version: '3'
+services:
+  adapter:
+    build:
+      context: .
+    container_name: adapter
+    environment:
+      - RAILS_ENV=test
+      - POSTGRES_PASSWORD=mysecretpassword
+    depends_on:
+      - postgresdb
+      - materializedb
+    volumes:
+      - ./:/usr/src/activerecord_materialize_adapter
+    networks:
+      - default
+    tty: true
+    stdin_open: true
+
+  postgresdb:
+    image: postgres:13.3
+    command:
+      postgres -c config_file=/etc/postgresql/postgresql.conf
+    container_name: postgresdb
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_PASSWORD=mysecretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./postgres/pg_hba.conf:/etc/postgres/pg_hba.conf
+    networks:
+      - default
+
+  materializedb:
+    image: materialize/materialized:v0.9.0
+    container_name: materializedb
+    ports:
+      - "6875:6875"
+    networks:
+      - default
+
+networks:
+  default:

@@ -1,0 +1,1 @@
+SELECT key, sum(value) FROM pseudo_source GROUP BY key
