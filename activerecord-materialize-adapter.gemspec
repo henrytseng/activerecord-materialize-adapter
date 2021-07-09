@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
   s.homepage = 'https://rubygems.org/gems/example'
   s.metadata = { "source_code_uri" => "https://github.com/example/example" }
 
-  s.add_dependency "activerecord", "~> 6.1"
-  s.add_dependency "activesupport", "~> 6.1"
+  s.add_dependency "activerecord", "~> 6.0"
+  s.add_dependency "activesupport", "~> 6.0"
   s.add_development_dependency "rake", "~> 12.0"
   s.add_development_dependency "rspec", "~> 3.9.0"
 end
