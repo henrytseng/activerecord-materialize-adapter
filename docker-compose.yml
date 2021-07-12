@@ -1,0 +1,36 @@
+version: '3'
+services:
+  adapter:
+    build:
+      context: .
+    container_name: adapter
+    depends_on:
+      - postgresdb
+      - materializedb
+    volumes:
+      - ./:/usr/src
+    networks:
+      - default
+    tty: true
+    stdin_open: true
+
+  postgresdb:
+    image: postgis/postgis:11-2.5
+    container_name: postgresdb
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+
+  materializedb:
+    image: materialize/materialized:mzbuild-FUVFJCT3II4JT7BZ36UZHEGRTV76EBFD
+    container_name: materializedb
+    ports:
+      - "6875:6875"
+    networks:
+      - default
+
+networks:
+  default:

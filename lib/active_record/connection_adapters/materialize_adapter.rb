@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+require "active_record"
+
+# autoload AbstractAdapter to avoid circular require and void context warnings
+module ActiveRecord
+  module ConnectionAdapters
+    AbstractAdapter
+  end
+end
+
+require 'active_record/connection_adapters/postgresql_adapter'
+require 'active_record/connection_adapters/materialize/version'
+require 'active_record/connection_adapters/materialize/setup'
+require 'active_record/connection_adapters/materialize/create_connection'
+require 'active_record/connection_adapters/materialize/materialize_database_tasks'
+
+puts "read materialize_adapter"
+ActiveRecord::ConnectionAdapters::Materialize.initial_setup
+
+if defined?(Rails::Railtie)
+  require "active_record/connection_adapters/materialize/railtie"
+end
+
 module ActiveRecord
   module ConnectionAdapters
     class MaterializeAdapter < PostgreSQLAdapter
@@ -33,7 +55,10 @@ module ActiveRecord
           if @config[:encoding]
             @connection.set_client_encoding(@config[:encoding])
           end
-          # self.client_min_messages = @config[:min_messages] || "warning"
+
+          # TODO: remove unsupported
+          self.client_min_messages = @config[:min_messages] || "warning"
+
           self.schema_search_path = @config[:schema_search_path] || @config[:schema_order]
 
           # Use standard-conforming strings so we don't have to do the E'...' dance.
