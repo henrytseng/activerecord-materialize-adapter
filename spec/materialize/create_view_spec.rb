@@ -8,6 +8,7 @@ describe "Create View" do
         ('b', 5), ('c', 6), ('c', 7)
     SQL
 
+    # TODO: figure out issues with performance issue
     res = ActiveRecord::Base.connection.execute <<-SQL.squish
       SELECT * FROM pseudo_source
     SQL

@@ -25,7 +25,7 @@ services:
       - default
 
   materializedb:
-    image: materialize/materialized:mzbuild-FUVFJCT3II4JT7BZ36UZHEGRTV76EBFD
+    image: materialize/materialized:mzbuild-XVWAK24CHQBPRZUKRCMUAB5PT3HUF2X5
     container_name: materializedb
     ports:
       - "6875:6875"
