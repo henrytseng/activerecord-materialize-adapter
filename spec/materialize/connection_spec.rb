@@ -15,9 +15,7 @@ describe "Connection" do
 
   it "should handle an available connection" do
     response = ActiveRecord::Base.connection.execute "select now();"
-    rows = response.first
-    result = rows.first
-    expect(result).to be_truthy
+    result = response.first['now'].try :to_s
+    expect(result.length).not_to be 0
   end
 end
-
