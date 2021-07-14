@@ -11,22 +11,22 @@ module ActiveRecord
           create_database(name, options)
         end
 
-        # Create a new PostgreSQL database. Options include <tt>:owner</tt>, <tt>:template</tt>,
+        # Create a new Materialize database. Options include <tt>:owner</tt>, <tt>:template</tt>,
         # <tt>:encoding</tt> (defaults to utf8), <tt>:collation</tt>, <tt>:ctype</tt>,
         # <tt>:tablespace</tt>, and <tt>:connection_limit</tt> (note that MySQL uses
-        # <tt>:charset</tt> while PostgreSQL uses <tt>:encoding</tt>).
+        # <tt>:charset</tt> while Materialize uses <tt>:encoding</tt>).
         #
         # Example:
         #   create_database config[:database], config
         #   create_database 'foo_development', encoding: 'unicode'
         def create_database(name, options = {})
-          options = options.symbolize_keys
-          if_exists = "IF NOT EXISTS " if options[:if_exists]
+          options = {}.merge(options.symbolize_keys)
+          if_exists = "IF NOT EXISTS " unless [false, 'false', '0', 0].include? options[:if_exists]
 
           execute "CREATE DATABASE #{if_exists}#{quote_table_name(name)}"
         end
 
-        # Drops a PostgreSQL database.
+        # Drops a Materialize database.
         #
         # Example:
         #   drop_database 'matt_development'
@@ -228,7 +228,7 @@ module ActiveRecord
           return nil unless result
           Utils.extract_schema_qualified_name(result).to_s
         rescue ActiveRecord::StatementInvalid
-          PostgreSQL::Name.new(nil, "#{table_name}_#{pk}_seq").to_s
+          Materialize::Name.new(nil, "#{table_name}_#{pk}_seq").to_s
         end
 
         def serial_sequence(table, column)
@@ -324,7 +324,7 @@ module ActiveRecord
 
           pk = result.shift
           if result.last
-            [pk, PostgreSQL::Name.new(*result)]
+            [pk, Materialize::Name.new(*result)]
           else
             [pk, nil]
           end
@@ -432,14 +432,14 @@ module ActiveRecord
             provided_index = Utils.extract_schema_qualified_name(options[:name].to_s)
 
             options[:name] = provided_index.identifier
-            table = PostgreSQL::Name.new(provided_index.schema, table.identifier) unless table.schema.present?
+            table = Materialize::Name.new(provided_index.schema, table.identifier) unless table.schema.present?
 
             if provided_index.schema.present? && table.schema != provided_index.schema
               raise ArgumentError.new("Index schema '#{provided_index.schema}' does not match table schema '#{table.schema}'")
             end
           end
 
-          index_to_remove = PostgreSQL::Name.new(table.schema, index_name_for_remove(table.to_s, options))
+          index_to_remove = Materialize::Name.new(table.schema, index_name_for_remove(table.to_s, options))
           algorithm =
             if options.is_a?(Hash) && options.key?(:algorithm)
               index_algorithms.fetch(options[:algorithm]) do
@@ -496,19 +496,19 @@ module ActiveRecord
           query_values(data_source_sql(table_name, type: "FOREIGN TABLE"), "SCHEMA").any? if table_name.present?
         end
 
-        # Maps logical Rails types to PostgreSQL-specific data types.
+        # Maps logical Rails types to Materialize-specific data types.
         def type_to_sql(type, limit: nil, precision: nil, scale: nil, array: nil, **) # :nodoc:
           sql = \
             case type.to_s
             when "binary"
-              # PostgreSQL doesn't support limits on binary (bytea) columns.
+              # Materialize doesn't support limits on binary (bytea) columns.
               # The hard limit is 1GB, because of a 32-bit size field, and TOAST.
               case limit
               when nil, 0..0x3fffffff; super(type)
               else raise ArgumentError, "No binary type has byte size #{limit}. The limit on binary can be at most 1GB - 1byte."
               end
             when "text"
-              # PostgreSQL doesn't support limits on text columns.
+              # Materialize doesn't support limits on text columns.
               # The hard limit is 1GB, according to section 8.3 in the manual.
               case limit
               when nil, 0..0x3fffffff; super(type)
@@ -529,7 +529,7 @@ module ActiveRecord
           sql
         end
 
-        # PostgreSQL requires the ORDER BY columns in the select list for distinct queries, and
+        # Materialize requires the ORDER BY columns in the select list for distinct queries, and
         # requires that the ORDER BY include the distinct column.
         def columns_for_distinct(columns, orders) #:nodoc:
           order_columns = orders.reject(&:blank?).map { |s|
@@ -544,11 +544,11 @@ module ActiveRecord
         end
 
         def update_table_definition(table_name, base) # :nodoc:
-          PostgreSQL::Table.new(table_name, base)
+          Materialize::Table.new(table_name, base)
         end
 
         def create_schema_dumper(options) # :nodoc:
-          PostgreSQL::SchemaDumper.create(self, options)
+          Materialize::SchemaDumper.create(self, options)
         end
 
         # Validates the given constraint.
@@ -590,15 +590,15 @@ module ActiveRecord
 
         private
           def schema_creation
-            PostgreSQL::SchemaCreation.new(self)
+            Materialize::SchemaCreation.new(self)
           end
 
           def create_table_definition(*args, **options)
-            PostgreSQL::TableDefinition.new(self, *args, **options)
+            Materialize::TableDefinition.new(self, *args, **options)
           end
 
           def create_alter_table(name)
-            PostgreSQL::AlterTable.new create_table_definition(name)
+            Materialize::AlterTable.new create_table_definition(name)
           end
 
           def new_column_from_field(table_name, field)
@@ -611,7 +611,7 @@ module ActiveRecord
               serial = sequence_name_from_parts(table_name, column_name, match[:suffix]) == match[:sequence_name]
             end
 
-            PostgreSQL::Column.new(
+            Materialize::Column.new(
               column_name,
               default_value,
               type_metadata,
@@ -632,7 +632,7 @@ module ActiveRecord
               precision: cast_type.precision,
               scale: cast_type.scale,
             )
-            PostgreSQL::TypeMetadata.new(simple_type, oid: oid, fmod: fmod)
+            Materialize::TypeMetadata.new(simple_type, oid: oid, fmod: fmod)
           end
 
           def sequence_name_from_parts(table_name, column_name, suffix)
@@ -679,7 +679,7 @@ module ActiveRecord
             default = extract_new_default_value(default_or_changes)
             alter_column_query = "ALTER COLUMN #{quote_column_name(column_name)} %s"
             if default.nil?
-              # <tt>DEFAULT NULL</tt> results in the same behavior as <tt>DROP DEFAULT</tt>. However, PostgreSQL will
+              # <tt>DEFAULT NULL</tt> results in the same behavior as <tt>DROP DEFAULT</tt>. However, Materialize will
               # cast the default to the columns type, which leaves us with a default like "default NULL::character varying".
               alter_column_query % "DROP DEFAULT"
             else

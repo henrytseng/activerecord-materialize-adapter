@@ -6,12 +6,12 @@ module ActiveRecord
       module DatabaseStatements
         def explain(arel, binds = [])
           sql = "EXPLAIN #{to_sql(arel, binds)}"
-          PostgreSQL::ExplainPrettyPrinter.new.pp(exec_query(sql, "EXPLAIN", binds))
+          Materialize::ExplainPrettyPrinter.new.pp(exec_query(sql, "EXPLAIN", binds))
         end
 
-        # The internal PostgreSQL identifier of the money data type.
+        # The internal Materialize identifier of the money data type.
         MONEY_COLUMN_TYPE_OID = 790 #:nodoc:
-        # The internal PostgreSQL identifier of the BYTEA data type.
+        # The internal Materialize identifier of the BYTEA data type.
         BYTEA_COLUMN_TYPE_OID = 17 #:nodoc:
 
         # create a 2D array representing the result set
@@ -38,7 +38,7 @@ module ActiveRecord
 
             # If this is a money type column and there are any currency symbols,
             # then strip them off. Indeed it would be prettier to do this in
-            # PostgreSQLColumn.string_to_decimal but would break form input
+            # MaterializeColumn.string_to_decimal but would break form input
             # fields that call value_before_type_cast.
             monies.each do |index, _|
               data = row[index]

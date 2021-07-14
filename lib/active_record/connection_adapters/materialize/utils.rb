@@ -4,7 +4,7 @@ module ActiveRecord
   module ConnectionAdapters
     module Materialize
       # Value Object to hold a schema qualified name.
-      # This is usually the name of a PostgreSQL relation but it can also represent
+      # This is usually the name of a Materialize relation but it can also represent
       # schema qualified type names. +schema+ and +identifier+ are unquoted to prevent
       # double quoting.
       class Name # :nodoc:
@@ -54,11 +54,11 @@ module ActiveRecord
       module Utils # :nodoc:
         extend self
 
-        # Returns an instance of <tt>ActiveRecord::ConnectionAdapters::PostgreSQL::Name</tt>
+        # Returns an instance of <tt>ActiveRecord::ConnectionAdapters::Materialize::Name</tt>
         # extracted from +string+.
         # +schema+ is +nil+ if not specified in +string+.
         # +schema+ and +identifier+ exclude surrounding quotes (regardless of whether provided in +string+)
-        # +string+ supports the range of schema/table references understood by PostgreSQL, for example:
+        # +string+ supports the range of schema/table references understood by Materialize, for example:
         #
         # * <tt>table_name</tt>
         # * <tt>"table.name"</tt>
@@ -72,7 +72,7 @@ module ActiveRecord
             table = schema
             schema = nil
           end
-          PostgreSQL::Name.new(schema, table)
+          Materialize::Name.new(schema, table)
         end
       end
     end

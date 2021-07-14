@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 require "tempfile"
+require "active_record"
 
 module ActiveRecord
   module Tasks # :nodoc:
     class MaterializeDatabaseTasks # :nodoc:
-      DEFAULT_ENCODING = ENV["CHARSET"] || "utf8"
       ON_ERROR_STOP_1 = "ON_ERROR_STOP=1"
       SQL_COMMENT_BEGIN = "--"
 
@@ -18,8 +18,7 @@ module ActiveRecord
 
       def create(master_established = false)
         establish_master_connection unless master_established
-        connection.create_database configuration["database"],
-          configuration.merge("encoding" => encoding)
+        connection.create_database configuration["database"], configuration
         establish_connection configuration
       rescue ActiveRecord::StatementInvalid => error
         if error.cause.is_a?(PG::DuplicateDatabase)
@@ -32,10 +31,6 @@ module ActiveRecord
       def drop
         establish_master_connection
         connection.drop_database configuration["database"]
-      end
-
-      def charset
-        connection.encoding
       end
 
       def collation
@@ -90,10 +85,6 @@ module ActiveRecord
 
       private
         attr_reader :configuration
-
-        def encoding
-          configuration["encoding"] || DEFAULT_ENCODING
-        end
 
         def establish_master_connection
           establish_connection configuration.merge(

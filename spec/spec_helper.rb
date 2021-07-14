@@ -1,8 +1,9 @@
-require 'activerecord-materialize-adapter'
 require 'pry'
-
+require "rspec/expectations"
+require 'activerecord-materialize-adapter'
 require 'helpers/database_helper'
 
-RSpec.configure do |c|
-  c.include DatabaseHelper
+RSpec.configure do |config|
+  config.include DatabaseHelper
+
 end

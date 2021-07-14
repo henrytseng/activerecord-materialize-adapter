@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "active_record/type"
 require "active_record/connection_adapters/materialize/oid/array"
 require "active_record/connection_adapters/materialize/oid/bit"
 require "active_record/connection_adapters/materialize/oid/bit_varying"
@@ -21,6 +22,8 @@ require "active_record/connection_adapters/materialize/oid/specialized_string"
 require "active_record/connection_adapters/materialize/oid/uuid"
 require "active_record/connection_adapters/materialize/oid/vector"
 require "active_record/connection_adapters/materialize/oid/xml"
+
+require "active_record/connection_adapters/materialize/oid/type_map_initializer"
 
 module ActiveRecord
   module ConnectionAdapters
