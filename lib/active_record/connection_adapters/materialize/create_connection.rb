@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "pg"
-
 module ActiveRecord  # :nodoc:
   module ConnectionHandling  # :nodoc:
 
@@ -16,14 +15,14 @@ module ActiveRecord  # :nodoc:
       valid_conn_param_keys = PG::Connection.conndefaults_hash.keys + [:requiressl]
       conn_params.slice!(*valid_conn_param_keys)
 
-      binding.pry
-      ConnectionAdapters::MaterializeAdapter.new(
-        ConnectionAdapters::MaterializeAdapter.new_client(conn_params),
-        logger,
-        conn_params,
-        config
-      )
+      conn = PG.connect(conn_params)
+      ConnectionAdapters::MaterializeAdapter.new(conn, logger, conn_params, config)
+    rescue ::PG::Error => error
+      if error.message.include?(conn_params[:dbname])
+        raise ActiveRecord::NoDatabaseError
+      else
+        raise
+      end
     end
-
   end
 end

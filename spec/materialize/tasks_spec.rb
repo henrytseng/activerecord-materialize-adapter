@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe "Rake" do
-  it "should load rake tasks" do
-    ActiveRecord::Base.connection.execute "select now();"
-
-
+  it "should create database" do
+    create_db
   end
 end
