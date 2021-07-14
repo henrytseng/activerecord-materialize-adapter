@@ -14,4 +14,4 @@ jobs:
       - name: Build
         run: docker-compose build
       - name: Test
-        run: docker-compose run adapter bundle exec rspec
+        run: docker-compose run adapter "bundle install && bundle exec rspec"
