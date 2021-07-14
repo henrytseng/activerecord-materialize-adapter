@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker-compose run postgresdb psql -h materializedb -U materialize -p 6875

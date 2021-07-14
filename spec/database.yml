@@ -1,8 +1,7 @@
-adapter: postgis
-host: <%= ENV["PGHOST"] || "127.0.0.1" %>
-port: <%= ENV["PGPORT"] || "5432" %>
-database: <%= ENV["PGDATABASE"] || "postgis_adapter_test" %>
-username: <%= ENV["PGUSER"] || "postgres" %>
+adapter: materialize
+host: <%= ENV["PGHOST"] || "materializedb" %>
+port: <%= ENV["PGPORT"] || "6875" %>
+database: <%= ENV["PGDATABASE"] || "materialize_adapter_test" %>
+username: <%= ENV["PGUSER"] || "materialize" %>
 password: <%= ENV["PGPASSWORD"] || "" %>
 setup: default
-schema_search_path: public
