@@ -93,10 +93,10 @@ module ActiveRecord
         end
 
         def set_psql_env
-          ENV["MATERIALIZEHOST"]     = configuration["host"]          if configuration["host"]
-          ENV["MATERIALIZEPORT"]     = configuration["port"].to_s     if configuration["port"]
-          ENV["MATERIALIZEPASSWORD"] = configuration["password"].to_s if configuration["password"]
-          ENV["MATERIALIZEUSER"]     = configuration["username"].to_s if configuration["username"]
+          ENV["PGHOST"]     = configuration["host"]          if configuration["host"]
+          ENV["PGPORT"]     = configuration["port"].to_s     if configuration["port"]
+          ENV["PGPASSWORD"] = configuration["password"].to_s if configuration["password"]
+          ENV["PGUSER"]     = configuration["username"].to_s if configuration["username"]
         end
 
         def run_cmd(cmd, args, action)
