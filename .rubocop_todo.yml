@@ -11,7 +11,7 @@
 # Configuration parameters: TreatCommentsAsGroupSeparators, ConsiderPunctuation, Include.
 # Include: **/*.gemfile, **/Gemfile, **/gems.rb
 Bundler/OrderedGems:
-  Exclude:
+  Enabled: true
 
 # Offense count: 1
 # Configuration parameters: Include.
