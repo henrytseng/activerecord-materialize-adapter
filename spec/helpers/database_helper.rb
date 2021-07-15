@@ -1,5 +1,7 @@
 require 'securerandom'
+require "active_record/tasks/database_tasks"
 require "active_record/connection_adapters/materialize_adapter"
+require "active_record/tasks/postgresql_database_tasks"
 
 module DatabaseHelper
   def default_config_path
@@ -17,22 +19,38 @@ module DatabaseHelper
   def configuration_options(config_path = default_config_path, database: nil)
     config = YAML.load(ERB.new(File.read(config_path)).result)
     config = config.merge({ "database" => database }) unless database.nil?
-    config
+    config[ENV['RAILS_ENV']]
   end
 
-  def create_db(options = {})
-    options = configuration_options
+  def create_materialize(options = {})
+    options = configuration_options['materialize']
       .merge('database' => database_id)
       .merge(options)
     ActiveRecord::Tasks::MaterializeDatabaseTasks.new(options).create
   end
 
-  def drop_db_if_exists(options = {})
-    options = configuration_options
+  def drop_materialize(options = {})
+    options = configuration_options['materialize']
       .merge('database' => database_id)
       .merge(options)
     ActiveRecord::Tasks::MaterializeDatabaseTasks.new(options).drop
-  rescue ActiveRecord::DatabaseAlreadyExists
+  rescue ActiveRecord::Tasks::DatabaseAlreadyExists
+    # ignore
+  end
+
+  def create_pg(options = {})
+    options = configuration_options['pg']
+      .merge('database' => database_id)
+      .merge(options)
+    ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).create
+  end
+
+  def drop_pg(options = {})
+    options = configuration_options['pg']
+      .merge('database' => database_id)
+      .merge(options)
+    ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).drop
+  rescue ActiveRecord::Tasks::DatabaseAlreadyExists
     # ignore
   end
 

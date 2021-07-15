@@ -1,7 +1,15 @@
-adapter: materialize
-host: <%= ENV["PGHOST"] || "materializedb" %>
-port: <%= ENV["PGPORT"] || "6875" %>
-database: <%= ENV["PGDATABASE"] || "materialize_adapter_test" %>
-username: <%= ENV["PGUSER"] || "materialize" %>
-password: <%= ENV["PGPASSWORD"] || "" %>
-setup: default
+test:
+  pg:
+    adapter: postgresql
+    host: postgresdb
+    port: 5432
+    username: postgres
+    database: materialize_adapter_test
+
+  materialize:
+    adapter: materialize
+    host: "materializedb"
+    port: "6875"
+    database: "materialize_adapter_test"
+    username: "materialize"
+    setup: default

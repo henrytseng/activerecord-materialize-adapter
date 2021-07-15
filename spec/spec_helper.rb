@@ -9,11 +9,11 @@ RSpec.configure do |config|
   config.include DatabaseHelper
 
   config.before(:each) do
-    create_db
+    create_materialize
   end
 
   config.after(:each) do
-    drop_db_if_exists
+    drop_materialize
     use_different_database
   end
 end
