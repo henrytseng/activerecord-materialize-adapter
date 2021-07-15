@@ -4,7 +4,8 @@ source "https://rubygems.org"
 gemspec
 
 gem "pg", "~> 1.0", platform: :ruby
+gem "retriable"
 gem "rspec"
 gem "byebug"
 gem "pry-byebug"
-
+gem "rubocop"

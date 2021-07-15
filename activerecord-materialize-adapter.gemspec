@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "activerecord", "~> 6.0.3.7"
   s.add_dependency "activesupport", "~> 6.0.3.7"
+  s.add_dependency "retriable", "~> 3.1"
   s.add_development_dependency "rake", "~> 12.0"
   s.add_development_dependency "rspec", "~> 3.9.0"
+  s.add_development_dependency "rubocop", "~> 1.18"
 end
