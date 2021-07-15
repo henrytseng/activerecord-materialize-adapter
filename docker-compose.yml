@@ -8,7 +8,7 @@ services:
       - postgresdb
       - materializedb
     volumes:
-      - ./:/usr/src
+      - ./:/usr/src/activerecord_materialize_adapter
     networks:
       - default
     tty: true

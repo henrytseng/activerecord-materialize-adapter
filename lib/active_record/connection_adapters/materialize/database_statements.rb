@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'materialize/errors/incomplete_input'
+
 module ActiveRecord
   module ConnectionAdapters
     module Materialize
@@ -91,6 +93,15 @@ module ActiveRecord
             ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
               @connection.async_exec(sql)
             end
+          end
+
+        # Known issue: PG::InternalError: ERROR:  At least one input has no complete timestamps yet
+        # https://github.com/MaterializeInc/materialize/issues/2917
+        rescue ActiveRecord::StatementInvalid => error
+          if error.message.include? "At least one input has no complete timestamps yet"
+            raise ::Materialize::Errors::IncompleteInput, error.message
+          else
+            raise
           end
         end
 
