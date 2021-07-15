@@ -12,7 +12,6 @@
 # Include: **/*.gemfile, **/Gemfile, **/gems.rb
 Bundler/OrderedGems:
   Exclude:
-    - 'Gemfile'
 
 # Offense count: 1
 # Configuration parameters: Include.

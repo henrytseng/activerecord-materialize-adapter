@@ -29,7 +29,3 @@ Metrics/ParameterLists:
 
 Metrics/PerceivedComplexity:
   Enabled: false
-
-
-
-
