@@ -1,0 +1,14 @@
+inherit_from:
+  - .rubocop_todo.yml
+  - rubocop.yml
+
+
+
+AllCops:
+  SuggestExtensions: false
+  Exclude:
+    - _site/**/*
+    - node_modules/**/*
+    - vendor/**/*
+    - .pryrc
+
