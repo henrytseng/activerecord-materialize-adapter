@@ -1,0 +1,1 @@
+SELECT sum(sum) FROM key_sums;
