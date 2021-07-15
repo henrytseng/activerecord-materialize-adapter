@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activerecord-materialize-adapter (0.2.0)
+    activerecord-materialize-adapter (0.2.1)
       activerecord (~> 6.0.3.7)
       activesupport (~> 6.0.3.7)
       retriable (~> 3.1)

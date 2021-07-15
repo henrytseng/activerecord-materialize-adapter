@@ -35,4 +35,12 @@ module DatabaseHelper
   rescue ActiveRecord::DatabaseAlreadyExists
     # ignore
   end
+
+  def get_sql(fixture_filename)
+    fixture_filename = fixture_filename.to_s
+    fixture_filename = "#{fixture_filename}.sql" unless fixture_filename.include? '.sql'
+    File.open("spec/fixtures/sql/#{fixture_filename}", 'r') do |f|
+      f.read
+    end
+  end
 end
