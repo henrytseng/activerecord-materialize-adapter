@@ -132,3 +132,1019 @@ FROM lhs
 JOIN pseudo_source AS rhs
 ON lhs.value = rhs.key
 GROUP BY lhs.key;[0m
+  [1m[35m (2.7ms)[0m  [1m[35mCREATE TABLE factories (
+    id SERIAL,
+    name character varying(255) NOT NULL,
+    created_at date
+)
+[0m
+  [1m[35m (3.5ms)[0m  [1m[35mCREATE TABLE products (
+    id SERIAL,
+    factory_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    created_at date
+)
+[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.7ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2)[0m  [["name", "Herbet Schwin"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.4ms)[0m  [1m[35mCREATE TABLE factories (
+    id SERIAL,
+    name character varying(255) NOT NULL,
+    created_at date
+)
+[0m
+  [1m[35m (3.7ms)[0m  [1m[35mCREATE TABLE products (
+    id SERIAL,
+    factory_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    created_at date
+)
+[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.4ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2)[0m  [["name", "Herbet Schwin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCREATE TABLE factories (
+    id SERIAL,
+    name character varying(255) NOT NULL,
+    created_at date
+)
+[0m
+  [1m[35m (3.5ms)[0m  [1m[35mCREATE TABLE products (
+    id SERIAL,
+    factory_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    created_at date
+)
+[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2)[0m  [["name", "Herbet Schwin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.9ms)[0m  [1m[35mCREATE TABLE factories (
+    id SERIAL,
+    name character varying(255) NOT NULL,
+    created_at date
+)
+[0m
+  [1m[35m (3.7ms)[0m  [1m[35mCREATE TABLE products (
+    id SERIAL,
+    factory_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    created_at date
+)
+[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2)[0m  [["name", "Elisha"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE factories (
+  id SERIAL,
+  name character varying(255) NOT NULL,
+  created_at date
+
+  CONSTRAINT pkey
+    PRIMARY KEY (id)
+)
+[0m
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE TABLE factories (
+  id SERIAL CONSTRAINT id_seq PRIMARY KEY,
+  name character varying(255) NOT NULL,
+  created_at date
+)
+[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE TABLE products (
+  id SERIAL CONSTRAINT id_seq PRIMARY KEY,
+  factory_id integer NOT NULL,
+  name character varying(255) NOT NULL,
+  created_at date
+)
+[0m
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE TABLE factories (
+  id SERIAL CONSTRAINT factories_id PRIMARY KEY,
+  name character varying(255) NOT NULL,
+  created_at date
+)
+[0m
+  [1m[35m (7.3ms)[0m  [1m[35mCREATE TABLE products (
+  id SERIAL CONSTRAINT products_id PRIMARY KEY,
+  factory_id integer NOT NULL,
+  name character varying(255) NOT NULL,
+  created_at date
+)
+[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.6ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Gustaf"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Elvin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Orlando"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.7ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Pleasant"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Jerry"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Anastacio"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Rupert"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Peter"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Bill"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Hall"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Terry"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Leroy"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Oliver"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Norman"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Gorge"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Robert"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Dennis"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Jennie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Malcolm"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Hugo"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Russell"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Newt"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Annie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Gene"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Alonzo"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Harrison"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Arther"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Nick"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Abbott"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Ferdinand"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Hugh"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Byron"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Friend"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Math"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Scott"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Hardie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Robert"], ["created_at", "2021-07-16"]]
+  [1m[35m (2.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Cullen"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Lyle"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Erie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".* FROM "products"[0m
+  [1m[35m (59.5ms)[0m  [1m[35mCREATE TABLE factories (
+  id SERIAL CONSTRAINT factories_id PRIMARY KEY,
+  name character varying(255) NOT NULL,
+  created_at date
+)
+[0m
+  [1m[35m (57.5ms)[0m  [1m[35mCREATE TABLE products (
+  id SERIAL CONSTRAINT products_id PRIMARY KEY,
+  factory_id integer NOT NULL,
+  name character varying(255) NOT NULL,
+  created_at date
+)
+[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Asa"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.6ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Smith"], ["created_at", "2021-07-16"]]
+  [1m[35m (22.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Ben"], ["created_at", "2021-07-16"]]
+  [1m[35m (41.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Hardy"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Reed"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Larry"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Justus"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Rich"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Karl"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Clement"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Adelbert"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Archie"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Philip"], ["created_at", "2021-07-16"]]
+  [1m[35m (13.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Eugene"], ["created_at", "2021-07-16"]]
+  [1m[35m (16.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Jeff"], ["created_at", "2021-07-16"]]
+  [1m[35m (13.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Manuel"], ["created_at", "2021-07-16"]]
+  [1m[35m (13.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Andy"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Mike"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Manley"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Lenard"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Dillard"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Lonnie"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Elton"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Wiley"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Dan"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Mose"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Clifford"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Joesph"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Clint"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Ivan"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.4ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Wyatt"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Elder"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Bertram"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Lyman"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Simon"], ["created_at", "2021-07-16"]]
+  [1m[35m (13.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.6ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Emmett"], ["created_at", "2021-07-16"]]
+  [1m[35m (18.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Oren"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Harris"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Pinkney"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Seth"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Chin"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Finley"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Burt"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Francisco"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Toney"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Roll"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Adrian"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.6ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Cassius"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Hermann"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Wesley"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Bennie"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Grover"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Hallie"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Ida"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.6ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Hermon"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Solon"], ["created_at", "2021-07-16"]]
+  [1m[35m (13.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Nicholas"], ["created_at", "2021-07-16"]]
+  [1m[35m (15.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Philo"], ["created_at", "2021-07-16"]]
+  [1m[35m (11.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Jonathan"], ["created_at", "2021-07-16"]]
+  [1m[35m (12.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Gregorio"], ["created_at", "2021-07-16"]]
+  [1m[35m (15.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.4ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Elbert"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Ferd"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Axel"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Howard"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Fredrick"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "West"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.4ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Anton"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Ross"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Ambrose"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Rutherford"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Handy"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Ebbie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Matthew"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Dallas"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Gus"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Webster"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Irving"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Giles"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Hunter"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Thornton"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Wesley"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Luther"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Oren"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Donald"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Victor"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Bud"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Lyle"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.1ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Adelbert"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.1ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Johnie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.1ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Silas"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Dudley"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Howard"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Charlie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Watson"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Edward"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Peter"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Deforest"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Humphrey"], ["created_at", "2021-07-16"]]
+  [1m[35m (2.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Pryor"], ["created_at", "2021-07-16"]]
+  [1m[35m (5.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Woodson"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Ephraim"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Raoul"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Louise"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Caesar"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Ashley"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.1ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Hal"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Rube"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Alf"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Bessie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Cornelious"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Hoy"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Luther"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Russel"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Alphonse"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Dallas"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Hubert"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Earl"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Bird"], ["created_at", "2021-07-16"]]
+  [1m[35m (2.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Boyd"], ["created_at", "2021-07-16"]]
+  [1m[35m (5.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Eddie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mFactory Load (0.2ms)[0m  [1m[34mSELECT "factories".* FROM "factories" ORDER BY "factories"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT "products".* FROM "products" WHERE "products"."factory_id" = $1[0m  [["factory_id", 20]]
+  [1m[35m (72.8ms)[0m  [1m[35mCREATE MATERIALIZED VIEW pseudo_source (key, value) AS
+  VALUES ('a', 1), ('a', 2), ('a', 3), ('a', 4),
+  ('b', 5), ('c', 6), ('c', 7)
+[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT * FROM pseudo_source[0m
+  [1m[35m (25.0ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_test2b3af4b5"[0m
+  [1m[35m (72.4ms)[0m  [1m[35mCREATE MATERIALIZED VIEW pseudo_source (key, value) AS
+  VALUES ('a', 1), ('a', 2), ('a', 3), ('a', 4),
+  ('b', 5), ('c', 6), ('c', 7)
+[0m
+  [1m[35m (73.0ms)[0m  [1m[35mCREATE MATERIALIZED VIEW lhs (key, value) AS
+    VALUES ('x', 'a'), ('y', 'b'), ('z', 'c');[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT lhs.key, sum(rhs.value)
+FROM lhs
+JOIN pseudo_source AS rhs
+ON lhs.value = rhs.key
+GROUP BY lhs.key;[0m
+  [1m[35m (7.1ms)[0m  [1m[34mSELECT lhs.key, sum(rhs.value)
+FROM lhs
+JOIN pseudo_source AS rhs
+ON lhs.value = rhs.key
+GROUP BY lhs.key;[0m
+  [1m[35m (26.1ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_teste32f5ece"[0m
+  [1m[35m (72.0ms)[0m  [1m[35mCREATE MATERIALIZED VIEW pseudo_source (key, value) AS
+  VALUES ('a', 1), ('a', 2), ('a', 3), ('a', 4),
+  ('b', 5), ('c', 6), ('c', 7)
+[0m
+  [1m[35m (1.7ms)[0m  [1m[34mSELECT key, sum(value) FROM pseudo_source GROUP BY key[0m
+  [1m[35m (76.8ms)[0m  [1m[35mCREATE MATERIALIZED VIEW key_sums AS
+    SELECT key, sum(value) FROM pseudo_source GROUP BY key;
+[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT sum(sum) FROM key_sums;[0m
+  [1m[35m (7.5ms)[0m  [1m[34mSELECT sum(sum) FROM key_sums;[0m
+  [1m[35m (23.5ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_test8df8a499"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_test8df8a499"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_test8df8a499"[0m
+  [1m[35m (25.3ms)[0m  [1m[35mDROP DATABASE IF EXISTS "materialize_adapter_test8df8a499"[0m
+  [1m[35m (23.9ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_test269239cd"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_test269239cd"[0m
+  [1m[35m (24.3ms)[0m  [1m[35mDROP DATABASE IF EXISTS "materialize_adapter_test269239cd"[0m
+  [1m[35m (418.5ms)[0m  [1m[35mCREATE DATABASE "materialize_adapter_testfe081f49" ENCODING = 'utf8'[0m
+  [1m[35m (11.9ms)[0m  [1m[35mCREATE TABLE factories (
+  id SERIAL CONSTRAINT factories_id PRIMARY KEY,
+  name character varying(255) NOT NULL,
+  created_at date
+)
+[0m
+  [1m[35m (12.2ms)[0m  [1m[35mCREATE TABLE products (
+  id SERIAL CONSTRAINT products_id PRIMARY KEY,
+  factory_id integer NOT NULL,
+  name character varying(255) NOT NULL,
+  created_at date
+)
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Sidney"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.6ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Justice"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Erving"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Augustus"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Elliott"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 1], ["name", "Clyde"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Sterling"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Hosea"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.1ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Jim"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Hubert"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Erwin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 2], ["name", "Vance"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.4ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Ephriam"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Okey"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Mervin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Lorenzo"], ["created_at", "2021-07-16"]]
+  [1m[35m (2.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Josiah"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 3], ["name", "Isiah"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Harman"], ["created_at", "2021-07-16"]]
+  [1m[35m (5.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Ward"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Russel"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Foster"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Granville"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 4], ["name", "Jasper"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Mervin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Isaiah"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Nels"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Eber"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Austin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 5], ["name", "Cato"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Freeman"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Axel"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Edgar"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Jesse"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Webb"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 6], ["name", "Ennis"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Willard"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Jean"], ["created_at", "2021-07-16"]]
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Cicero"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Ezra"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Clayton"], ["created_at", "2021-07-16"]]
+  [1m[35m (33.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 7], ["name", "Gabriel"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.5ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Bruce"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Hoyt"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Bennett"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Dixon"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Matthew"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 8], ["name", "Bryant"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Haywood"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Sylvester"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Sampson"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Parker"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "August"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 9], ["name", "Emma"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Lincoln"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Harris"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Rupert"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Melvin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Alton"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 10], ["name", "Lester"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.2ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Andrew"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Waldo"], ["created_at", "2021-07-16"]]
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Lane"], ["created_at", "2021-07-16"]]
+  [1m[35m (5.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Press"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Abner"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 11], ["name", "Olin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Adolphus"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Okey"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Lucius"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Dana"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Chauncey"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 12], ["name", "Alfred"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.4ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Tobe"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Yee"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Elroy"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Orval"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Pink"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 13], ["name", "Norman"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Marquis"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Charlie"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Cleveland"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Alois"], ["created_at", "2021-07-16"]]
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Nathaniel"], ["created_at", "2021-07-16"]]
+  [1m[35m (5.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.6ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 14], ["name", "Gene"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Riley"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Haywood"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Emmett"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Alvah"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Garret"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 15], ["name", "Alvin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Clement"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Merritt"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Elias"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Burley"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Elliott"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.5ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 16], ["name", "Lonzo"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.4ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Noah"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Judson"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Pete"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Orval"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Abe"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.2ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 17], ["name", "Emma"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Erie"], ["created_at", "2021-07-16"]]
+  [1m[35m (3.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Garry"], ["created_at", "2021-07-16"]]
+  [1m[35m (7.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Pedro"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Sam"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Milford"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 18], ["name", "Wheeler"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Maud"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Sterling"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Monroe"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Parley"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Christian"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 19], ["name", "Zeb"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mFactory Create (0.3ms)[0m  [1m[32mINSERT INTO "factories" ("name", "created_at") VALUES ($1, $2) RETURNING "id"[0m  [["name", "Grant"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Micheal"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Burt"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Guy"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.4ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Rollin"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProduct Create (0.3ms)[0m  [1m[32mINSERT INTO "products" ("factory_id", "name", "created_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["factory_id", 20], ["name", "Andres"], ["created_at", "2021-07-16"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (22.2ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_testd5199037"[0m
+  [1m[35m (34.3ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_test5dbfa6e6"[0m
+  [1m[35m (457.8ms)[0m  [1m[35mCREATE DATABASE "materialize_adapter_test5f4676e5" ENCODING = 'utf8'[0m
+  [1m[35m (0.2ms)[0m  [1m[34mselect version();[0m
+  [1m[35m (21.1ms)[0m  [1m[35mCREATE DATABASE IF NOT EXISTS "materialize_adapter_testc6377b29"[0m
+  [1m[35m (0.4ms)[0m  [1m[34mselect now();[0m
+  [1m[35m (0.6ms)[0m  [1m[34mselect version();[0m

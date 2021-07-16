@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'securerandom'
 require "active_record/tasks/database_tasks"
 require "active_record/connection_adapters/materialize_adapter"

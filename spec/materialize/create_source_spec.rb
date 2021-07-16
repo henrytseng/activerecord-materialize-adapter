@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'models/factory'
 require 'models/product'
@@ -11,9 +13,18 @@ describe "Create Source" do
       Product.establish_connection config
     end
 
+    20.times do
+      factory = Factory.create(name: random_name)
+      5.times do
+        Product.create(name: random_name, factory: factory)
+      end
+    end
 
-    f = Factory.create(name: 'Herbet Schwin')
+    with_materialize do
 
+    end
+
+    binding.pry
 
 
 

@@ -17,12 +17,15 @@ services:
     stdin_open: true
 
   postgresdb:
-    image: postgis/postgis:11-2.5
+    image: postgres:13.3
     container_name: postgresdb
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - "5432:5432"
+    volumes:
+      - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./postgres/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     networks:
       - default
 
