@@ -1,8 +1,10 @@
 require 'spec_helper'
-require 'retriable'
+require 'models/factory'
+require 'models/product'
 
 describe "Create Source" do
-  it "should handle an available connection" do
-    # binding.pry
+  it "should create a source" do
+
+    binding.pry
   end
 end

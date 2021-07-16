@@ -38,11 +38,33 @@ module DatabaseHelper
     # ignore
   end
 
+  def with_materialize
+    materialize_id = database_id
+    create_materialize({ 'database' => materialize_id })
+    config = configuration_options['materialize']
+    .merge('database' => materialize_id)
+    ActiveRecord::Base.establish_connection config
+    yield config
+    use_different_database
+    drop_materialize({ 'database' => materialize_id })
+  end
+
   def create_pg(options = {})
     options = configuration_options['pg']
       .merge('database' => database_id)
       .merge(options)
     ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).create
+  end
+
+  def with_pg
+    pg_id = database_id
+    create_pg({ 'database' => pg_id })
+    config = configuration_options['pg']
+    .merge('database' => pg_id)
+    ActiveRecord::Base.establish_connection config
+    yield config
+    use_different_database
+    drop_pg({ 'database' => pg_id })
   end
 
   def drop_pg(options = {})
