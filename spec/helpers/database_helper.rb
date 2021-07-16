@@ -16,6 +16,10 @@ module DatabaseHelper
     @database_id = nil
   end
 
+  def clean_list
+    @clean_list ||= []
+  end
+
   def configuration_options(config_path = default_config_path, database: nil)
     config = YAML.load(ERB.new(File.read(config_path)).result)
     config = config.merge({ "database" => database }) unless database.nil?
@@ -42,11 +46,11 @@ module DatabaseHelper
     materialize_id = database_id
     create_materialize({ 'database' => materialize_id })
     config = configuration_options['materialize']
-    .merge('database' => materialize_id)
+      .merge('database' => materialize_id)
     ActiveRecord::Base.establish_connection config
     yield config
     use_different_database
-    drop_materialize({ 'database' => materialize_id })
+    clean_list << -> { drop_materialize({ 'database' => materialize_id }) }
   end
 
   def create_pg(options = {})
@@ -60,11 +64,11 @@ module DatabaseHelper
     pg_id = database_id
     create_pg({ 'database' => pg_id })
     config = configuration_options['pg']
-    .merge('database' => pg_id)
+      .merge('database' => pg_id)
     ActiveRecord::Base.establish_connection config
     yield config
     use_different_database
-    drop_pg({ 'database' => pg_id })
+    clean_list << -> { drop_pg({ 'database' => pg_id }) }
   end
 
   def drop_pg(options = {})
