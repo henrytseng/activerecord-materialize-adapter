@@ -22,7 +22,10 @@ module DatabaseHelper
 
   def configuration_options(config_path = default_config_path, database: nil)
     config = YAML.load(ERB.new(File.read(config_path)).result)
-    config = config.merge({ "database" => database }) unless database.nil?
+    config = config.merge({
+      "database" => database,
+      "log_level" => :debug
+    }) unless database.nil?
     config[ENV['RAILS_ENV']]
   end
 
@@ -31,6 +34,7 @@ module DatabaseHelper
       .merge('database' => database_id)
       .merge(options)
     ActiveRecord::Tasks::MaterializeDatabaseTasks.new(options).create
+    ActiveRecord::Base.logger = ActiveSupport::Logger.new("logs/debug.log")
   end
 
   def drop_materialize(options = {})
@@ -58,6 +62,7 @@ module DatabaseHelper
       .merge('database' => database_id)
       .merge(options)
     ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).create
+    ActiveRecord::Base.logger = ActiveSupport::Logger.new("logs/debug.log")
   end
 
   def with_pg

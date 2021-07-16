@@ -1,6 +1,6 @@
 CREATE TABLE products (
-    id integer NOT NULL,
+    id SERIAL,
     factory_id integer NOT NULL,
-    name character varying(10) NOT NULL,
+    name character varying(255) NOT NULL,
     created_at date
 )
