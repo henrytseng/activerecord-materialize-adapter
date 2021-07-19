@@ -333,18 +333,8 @@ module ActiveRecord
         end
 
         def primary_keys(table_name) # :nodoc:
-          query_values(<<~SQL, "SCHEMA")
-            SELECT a.attname
-              FROM (
-                     SELECT indrelid, indkey, generate_subscripts(indkey, 1) idx
-                       FROM pg_index
-                      WHERE indrelid = #{quote(quote_table_name(table_name))}::regclass
-                        AND indisprimary
-                   ) i
-              JOIN pg_attribute a
-                ON a.attrelid = i.indrelid
-               AND a.attnum = i.indkey[i.idx]
-             ORDER BY i.idx
+          execute(<<~SQL, "SCHEMA").map { |r| r["column_names"] }
+            SHOW INDEXES FROM #{quote_table_name(table_name)}
           SQL
         end
 

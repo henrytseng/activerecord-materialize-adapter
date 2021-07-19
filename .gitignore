@@ -3,3 +3,5 @@
 *.gem
 .pryrc
 tmp/
+logs/
+

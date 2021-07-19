@@ -11,23 +11,21 @@ module DatabaseHelper
   end
 
   def database_id
-    @database_id ||= "materialize_adapter_test#{SecureRandom.hex(4)}"
+    @database_id ||= "#{SecureRandom.hex(4)}"
   end
 
   def use_different_database
     @database_id = nil
   end
 
-  def clean_list
-    @clean_list ||= []
-  end
-
   def configuration_options(config_path = default_config_path, database: nil)
     config = YAML.load(ERB.new(File.read(config_path)).result)
-    config = config.merge({
-      "database" => database,
-      "log_level" => :debug
-    }) unless database.nil?
+    unless database.nil?
+      config = config.merge({
+        "database" => database,
+        "log_level" => :debug
+      })
+    end
     config[ENV['RAILS_ENV']]
   end
 
@@ -35,8 +33,8 @@ module DatabaseHelper
     options = configuration_options['materialize']
       .merge('database' => database_id)
       .merge(options)
-    ActiveRecord::Tasks::MaterializeDatabaseTasks.new(options).create
     ActiveRecord::Base.logger = ActiveSupport::Logger.new("logs/debug.log")
+    ActiveRecord::Tasks::MaterializeDatabaseTasks.new(options).create
   end
 
   def drop_materialize(options = {})
@@ -44,38 +42,44 @@ module DatabaseHelper
       .merge('database' => database_id)
       .merge(options)
     ActiveRecord::Tasks::MaterializeDatabaseTasks.new(options).drop
-  rescue ActiveRecord::Tasks::DatabaseAlreadyExists
+  rescue PG::ObjectInUse
     # ignore
   end
 
-  def with_materialize
-    materialize_id = database_id
+  def with_materialize(options = {})
+    materialize_id = "materialize_test#{database_id}"
     create_materialize({ 'database' => materialize_id })
     config = configuration_options['materialize']
       .merge('database' => materialize_id)
+      .merge(options)
     ActiveRecord::Base.establish_connection config
     yield config
     use_different_database
-    clean_list << -> { drop_materialize({ 'database' => materialize_id }) }
+    at_exit { drop_materialize({ 'database' => materialize_id }) }
+  rescue PG::ObjectInUse
+    # ignore
   end
 
   def create_pg(options = {})
     options = configuration_options['pg']
       .merge('database' => database_id)
       .merge(options)
-    ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).create
     ActiveRecord::Base.logger = ActiveSupport::Logger.new("logs/debug.log")
+    ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).create
   end
 
-  def with_pg
-    pg_id = database_id
+  def with_pg(options = {})
+    pg_id = "pg_test#{database_id}"
     create_pg({ 'database' => pg_id })
     config = configuration_options['pg']
       .merge('database' => pg_id)
+      .merge(options)
     ActiveRecord::Base.establish_connection config
     yield config
     use_different_database
-    clean_list << -> { drop_pg({ 'database' => pg_id }) }
+    at_exit { drop_pg({ 'database' => pg_id }) }
+  rescue PG::ObjectInUse
+    # ignore
   end
 
   def drop_pg(options = {})
@@ -83,7 +87,7 @@ module DatabaseHelper
       .merge('database' => database_id)
       .merge(options)
     ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).drop
-  rescue ActiveRecord::Tasks::DatabaseAlreadyExists
+  rescue PG::ObjectInUse
     # ignore
   end
 

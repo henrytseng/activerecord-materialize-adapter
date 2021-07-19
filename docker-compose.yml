@@ -18,6 +18,8 @@ services:
 
   postgresdb:
     image: postgres:13.3
+    command:
+      postgres -c config_file=/etc/postgresql/postgresql.conf
     container_name: postgresdb
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
@@ -25,7 +27,7 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
-      - ./postgres/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./postgres/pg_hba.conf:/etc/postgres/pg_hba.conf
     networks:
       - default
 
