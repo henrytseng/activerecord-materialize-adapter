@@ -32,8 +32,26 @@ describe "SchemaStatements" do
   context "create and drop database" do
     it "should recreate database without error" do
       with_materialize do |config|
-        ActiveRecord::Base.recreate_database(config['database'])
-        binding.pry
+        ActiveRecord::Base.connection.recreate_database(config['database'])
+        res = ActiveRecord::Base.connection.execute("SHOW DATABASES")
+        results = res.values.flatten
+        expect(results).to include(config['database'])
+      end
+    end
+  end
+
+  context "create and drop table" do
+    it "should create-drop table" do
+      with_materialize do |config|
+        ActiveRecord::Base.connection.create_table('foo')
+        res = ActiveRecord::Base.connection.execute("SHOW TABLES")
+        results = res.values.flatten
+        expect(results).to include('foo')
+
+        ActiveRecord::Base.connection.drop_table('foobar')
+        res = ActiveRecord::Base.connection.execute("SHOW TABLES")
+        results = res.values.flatten
+        expect(results).not_to include('foo')
       end
     end
   end
