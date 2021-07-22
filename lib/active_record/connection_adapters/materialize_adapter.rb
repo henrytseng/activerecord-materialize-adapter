@@ -105,7 +105,7 @@ module ActiveRecord
       class_attribute :create_unlogged_tables, default: false
 
       NATIVE_DATABASE_TYPES = {
-        primary_key: "bigint primary key",
+        primary_key: "bigint",
         string:      { name: "character varying" },
         text:        { name: "text" },
         integer:     { name: "integer", limit: 4 },

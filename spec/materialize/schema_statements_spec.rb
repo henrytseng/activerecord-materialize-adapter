@@ -48,7 +48,7 @@ describe "SchemaStatements" do
         results = res.values.flatten
         expect(results).to include('foo')
 
-        ActiveRecord::Base.connection.drop_table('foobar')
+        ActiveRecord::Base.connection.drop_table('foo')
         res = ActiveRecord::Base.connection.execute("SHOW TABLES")
         results = res.values.flatten
         expect(results).not_to include('foo')
