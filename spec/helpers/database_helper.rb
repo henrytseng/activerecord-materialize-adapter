@@ -53,9 +53,10 @@ module DatabaseHelper
       .merge('database' => materialize_id)
       .merge(options)
     ActiveRecord::Base.establish_connection config
-    yield config
+    result = yield config
     use_different_database
     at_exit { drop_materialize({ 'database' => materialize_id }) }
+    result
   rescue PG::ObjectInUse
     # ignore
   end
@@ -75,9 +76,10 @@ module DatabaseHelper
       .merge('database' => pg_id)
       .merge(options)
     ActiveRecord::Base.establish_connection config
-    yield config
+    result = yield config
     use_different_database
     at_exit { drop_pg({ 'database' => pg_id }) }
+    result
   rescue PG::ObjectInUse
     # ignore
   end
