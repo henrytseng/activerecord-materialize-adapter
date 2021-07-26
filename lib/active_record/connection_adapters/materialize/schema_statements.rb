@@ -45,85 +45,31 @@ module ActiveRecord
 
         # Verifies existence of an index with a given name.
         def index_name_exists?(table_name, index_name)
-          table = quoted_scope(table_name)
-          index = quoted_scope(index_name)
-
-          query_value(<<~SQL, "SCHEMA").to_i > 0
-            SELECT COUNT(*)
-            FROM pg_class t
-            INNER JOIN pg_index d ON t.oid = d.indrelid
-            INNER JOIN pg_class i ON d.indexrelid = i.oid
-            LEFT JOIN pg_namespace n ON n.oid = i.relnamespace
-            WHERE i.relkind IN ('i', 'I')
-              AND i.relname = #{index[:name]}
-              AND t.relname = #{table[:name]}
-              AND n.nspname = #{index[:schema]}
+          available_indexes = execute(<<~SQL, "SCHEMA")
+            SHOW INDEXES FROM #{quote_table_name(table_name)}
           SQL
+          available_indexes.map { |c| c['key_name'] }.include? index_name.to_s
         end
 
         # Returns an array of indexes for the given table.
         def indexes(table_name) # :nodoc:
-          scope = quoted_scope(table_name)
-
-          result = query(<<~SQL, "SCHEMA")
-            SELECT distinct i.relname, d.indisunique, d.indkey, pg_get_indexdef(d.indexrelid), t.oid,
-                            pg_catalog.obj_description(i.oid, 'pg_class') AS comment
-            FROM pg_class t
-            INNER JOIN pg_index d ON t.oid = d.indrelid
-            INNER JOIN pg_class i ON d.indexrelid = i.oid
-            LEFT JOIN pg_namespace n ON n.oid = i.relnamespace
-            WHERE i.relkind IN ('i', 'I')
-              AND d.indisprimary = 'f'
-              AND t.relname = #{scope[:name]}
-              AND n.nspname = #{scope[:schema]}
-            ORDER BY i.relname
+          available_indexes = execute(<<~SQL, "SCHEMA")
+            SHOW INDEXES FROM #{quote_table_name(table_name)}
           SQL
-
-          result.map do |row|
-            index_name = row[0]
-            unique = row[1]
-            indkey = row[2].split(" ").map(&:to_i)
-            inddef = row[3]
-            oid = row[4]
-            comment = row[5]
-
-            using, expressions, where = inddef.scan(/ USING (\w+?) \((.+?)\)(?: WHERE (.+))?\z/m).flatten
-
-            orders = {}
-            opclasses = {}
-
-            if indkey.include?(0)
-              columns = expressions
-            else
-              columns = Hash[query(<<~SQL, "SCHEMA")].values_at(*indkey).compact
-                SELECT a.attnum, a.attname
-                FROM pg_attribute a
-                WHERE a.attrelid = #{oid}
-                AND a.attnum IN (#{indkey.join(",")})
-              SQL
-
-              # add info on sort order (only desc order is explicitly specified, asc is the default)
-              # and non-default opclasses
-              expressions.scan(/(?<column>\w+)"?\s?(?<opclass>\w+_ops)?\s?(?<desc>DESC)?\s?(?<nulls>NULLS (?:FIRST|LAST))?/).each do |column, opclass, desc, nulls|
-                opclasses[column] = opclass.to_sym if opclass
-                if nulls
-                  orders[column] = [desc, nulls].compact.join(" ")
-                else
-                  orders[column] = :desc if desc
-                end
-              end
-            end
-
+          available_indexes.group_by { |c| c['key_name'] }.map do |k, v|
+            index_name = k
             IndexDefinition.new(
               table_name,
               index_name,
-              unique,
-              columns,
-              orders: orders,
-              opclasses: opclasses,
-              where: where,
-              using: using.to_sym,
-              comment: comment.presence
+              unique = false,
+              columns = v.map { |c| c['column_name'] },
+              lengths: {},
+              orders: {},
+              opclasses: {},
+              where: nil,
+              type: nil,
+              using: nil,
+              comment: nil
             )
           end
         end
@@ -410,7 +356,7 @@ module ActiveRecord
 
         def add_index(table_name, column_name, options = {}) #:nodoc:
           index_name, index_type, index_columns_and_opclasses, index_options, index_algorithm, index_using, comment = add_index_options(table_name, column_name, **options)
-          execute("CREATE #{index_type} INDEX #{index_algorithm} #{quote_column_name(index_name)} ON #{quote_table_name(table_name)} #{index_using} (#{index_columns_and_opclasses})#{index_options}").tap do
+          execute("CREATE INDEX #{quote_column_name(index_name)} ON #{quote_table_name(table_name)} #{index_using} (#{index_columns_and_opclasses})#{index_options}").tap do
             execute "COMMENT ON INDEX #{quote_column_name(index_name)} IS #{quote(comment)}" if comment
           end
         end
@@ -526,8 +472,9 @@ module ActiveRecord
             # Convert Arel node to string
             s = visitor.compile(s) unless s.is_a?(String)
             # Remove any ASC/DESC modifiers
-            s.gsub(/\s+(?:ASC|DESC)\b/i, "")
-             .gsub(/\s+NULLS\s+(?:FIRST|LAST)\b/i, "")
+            s
+              .gsub(/\s+(?:ASC|DESC)\b/i, "")
+              .gsub(/\s+NULLS\s+(?:FIRST|LAST)\b/i, "")
           }.reject(&:blank?).map.with_index { |column, i| "#{column} AS alias_#{i}" }
 
           (order_columns << super).join(", ")

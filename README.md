@@ -38,6 +38,8 @@ The ActiveRecord Materialize Adapter is heavily based on the PostgreSQL database
 
 Read about Materialized architecture [https://materialize.com/docs/overview/architecture/](https://materialize.com/docs/overview/architecture/)
 
+Materialize has been designed to specifically solve problems with event streaming; therefore, some relational database functionality may not be supported.
+
 
 ## Contributing
 

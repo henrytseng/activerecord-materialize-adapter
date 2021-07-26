@@ -5,4 +5,4 @@ set -euo pipefail
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd $SCRIPT_DIR/..
 
-docker-compose run postgresdb psql -h postgresdb -U postgres
+docker-compose run --rm postgresdb psql -h postgresdb -U postgres

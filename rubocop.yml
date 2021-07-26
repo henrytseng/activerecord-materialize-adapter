@@ -29,3 +29,6 @@ Metrics/ParameterLists:
 
 Metrics/PerceivedComplexity:
   Enabled: false
+
+Sytle/SymbolArray:
+  Enabled: false

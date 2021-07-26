@@ -394,7 +394,7 @@ module ActiveRecord
 
       # Returns the configured supported identifier length supported by Materialize
       def max_identifier_length
-        @max_identifier_length ||= query_value("SHOW max_identifier_length", "SCHEMA").to_i
+        @max_identifier_length || 64
       end
 
       # Set the authorized user for this session
