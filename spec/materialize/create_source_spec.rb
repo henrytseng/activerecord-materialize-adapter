@@ -20,7 +20,7 @@ describe "Create source" do
         "factory/insert_factories",
         "factory/insert_products",
         "factory/insert_transactions"
-      ].each { |s| ActiveRecord::Base.connection.execute get_sql(s) }
+      ].each { |s| connection.execute get_sql(s) }
       Factory.establish_connection config
       Product.establish_connection config
       Transaction.establish_connection config
@@ -28,20 +28,20 @@ describe "Create source" do
 
     with_materialize do |config|
       # Create sourced
-      ActiveRecord::Base.connection.execute <<~SQL.squish
+      connection.execute <<~SQL.squish
         CREATE MATERIALIZED SOURCE "product_transaction" FROM POSTGRES
           CONNECTION 'host=postgresdb port=5432 user=postgres dbname=#{source_database}'
           PUBLICATION 'product_transaction'
       SQL
 
       # Create a view from source
-      ActiveRecord::Base.connection.execute 'CREATE VIEWS FROM SOURCE "product_transaction" ("products", "factories", "transactions");'
+      connection.execute 'CREATE VIEWS FROM SOURCE "product_transaction" ("products", "factories", "transactions");'
 
       # Create aggregated view
       [
         "factory/create_product_totals",
         "factory/create_factory_totals"
-      ].each { |s| ActiveRecord::Base.connection.execute get_sql(s) }
+      ].each { |s| connection.execute get_sql(s) }
       ProductTotal.establish_connection config
       FactoryTotal.establish_connection config
 
@@ -51,11 +51,11 @@ describe "Create source" do
       [
         "factory/drop_product_totals",
         "factory/drop_factory_totals"
-      ].each { |s| ActiveRecord::Base.connection.execute get_sql(s) }
+      ].each { |s| connection.execute get_sql(s) }
     end
 
     with_pg({ 'database' => source_database }) do |config|
-      ActiveRecord::Base.connection.execute get_sql("factory/drop_publication")
+      connection.execute get_sql("factory/drop_publication")
     end
   end
 end

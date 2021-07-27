@@ -95,7 +95,7 @@ module ActiveRecord
           end
         end
 
-        # Returns the current database name.
+        # TODO: unsupported current_database()
         def current_database
           query_value("SELECT current_database()", "SCHEMA")
         end
@@ -105,24 +105,24 @@ module ActiveRecord
           query_value("SELECT current_schema", "SCHEMA")
         end
 
-        # Returns the current database encoding format.
+        # TODO: unsupported current_database()
         def encoding
           query_value("SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = current_database()", "SCHEMA")
         end
 
-        # Returns the current database collation.
+        # TODO: unsupported current_database()
         def collation
           query_value("SELECT datcollate FROM pg_database WHERE datname = current_database()", "SCHEMA")
         end
 
-        # Returns the current database ctype.
+        # TODO: unsupported current_database()
         def ctype
           query_value("SELECT datctype FROM pg_database WHERE datname = current_database()", "SCHEMA")
         end
 
         # Returns an array of schema names.
         def schema_names
-          query_values(<<~SQL, "SCHEMA")
+          query_values(<<~SQL, "SCHEMA").uniq
             SELECT nspname
               FROM pg_namespace
              WHERE nspname !~ '^pg_.*'
@@ -133,24 +133,12 @@ module ActiveRecord
 
         # Creates a schema for the given schema name.
         def create_schema(schema_name)
-          execute "CREATE SCHEMA #{quote_schema_name(schema_name)}"
+          execute "CREATE SCHEMA #{quote_schema_name(schema_name.to_s)}"
         end
 
         # Drops the schema for the given schema name.
         def drop_schema(schema_name, options = {})
-          execute "DROP SCHEMA#{' IF EXISTS' if options[:if_exists]} #{quote_schema_name(schema_name)} CASCADE"
-        end
-
-        # Sets the schema search path to a string of comma-separated schema names.
-        # Names beginning with $ have to be quoted (e.g. $user => '$user').
-        # See: https://www.postgresql.org/docs/current/static/ddl-schemas.html
-        #
-        # This should be not be called manually but set in database.yml.
-        def schema_search_path=(schema_csv)
-          if schema_csv
-            execute("SET search_path TO #{schema_csv}", "SCHEMA")
-            @schema_search_path = schema_csv
-          end
+          execute "DROP SCHEMA#{' IF EXISTS' if options[:if_exists]} #{quote_schema_name(schema_name.to_s)} CASCADE"
         end
 
         # Returns the active schema search path.
@@ -158,27 +146,9 @@ module ActiveRecord
           @schema_search_path ||= query_value("SHOW search_path", "SCHEMA")
         end
 
-        # Returns the current client message level.
-        def client_min_messages
-          query_value("SHOW client_min_messages", "SCHEMA")
-        end
-
-        # Set the client message level.
-        def client_min_messages=(level)
-          execute("SET client_min_messages TO '#{level}'", "SCHEMA")
-        end
-
         # Returns the sequence name for a table's primary key or some other specified key.
         def default_sequence_name(table_name, pk = "id") #:nodoc:
-          result = serial_sequence(table_name, pk)
-          return nil unless result
-          Utils.extract_schema_qualified_name(result).to_s
-        rescue ActiveRecord::StatementInvalid
           Materialize::Name.new(nil, "#{table_name}_#{pk}_seq").to_s
-        end
-
-        def serial_sequence(table, column)
-          query_value("SELECT pg_get_serial_sequence(#{quote(table)}, #{quote(column)})", "SCHEMA")
         end
 
         # Sets the sequence of a table's primary key to the specified value.
@@ -356,9 +326,7 @@ module ActiveRecord
 
         def add_index(table_name, column_name, options = {}) #:nodoc:
           index_name, index_type, index_columns_and_opclasses, index_options, index_algorithm, index_using, comment = add_index_options(table_name, column_name, **options)
-          execute("CREATE INDEX #{quote_column_name(index_name)} ON #{quote_table_name(table_name)} #{index_using} (#{index_columns_and_opclasses})#{index_options}").tap do
-            execute "COMMENT ON INDEX #{quote_column_name(index_name)} IS #{quote(comment)}" if comment
-          end
+          execute("CREATE INDEX #{quote_column_name(index_name)} ON #{quote_table_name(table_name)} (#{index_columns_and_opclasses})")
         end
 
         def remove_index(table_name, options = {}) #:nodoc:

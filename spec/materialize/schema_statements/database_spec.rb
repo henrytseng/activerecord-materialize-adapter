@@ -4,7 +4,7 @@ describe "SchemaStatements - databases" do
   context "sanity checks" do
     it "should create other databases without conflict" do
       with_pg do |config|
-        response = ActiveRecord::Base.connection.execute "select version();"
+        response = connection.execute "select version();"
         result = response.values.first
         expect(result.first).not_to include "materialized"
       end
@@ -18,11 +18,11 @@ describe "SchemaStatements - databases" do
 
     it "should handle an available connection" do
       with_materialize do |config|
-        response = ActiveRecord::Base.connection.execute "select now();"
+        response = connection.execute "select now();"
         result = response.first['now'].try :to_s
         expect(result.length).not_to be 0
 
-        response = ActiveRecord::Base.connection.execute "select version();"
+        response = connection.execute "select version();"
         result = response.values.first
         expect(result.first).to include "materialized"
       end
@@ -32,8 +32,8 @@ describe "SchemaStatements - databases" do
   context "create and drop database" do
     it "should recreate database without error" do
       with_materialize do |config|
-        ActiveRecord::Base.connection.recreate_database(config['database'])
-        res = ActiveRecord::Base.connection.execute("SHOW DATABASES")
+        connection.recreate_database(config['database'])
+        res = connection.execute("SHOW DATABASES")
         results = res.values.flatten
         expect(results).to include(config['database'])
       end

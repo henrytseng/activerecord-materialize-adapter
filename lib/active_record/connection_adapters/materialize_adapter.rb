@@ -709,7 +709,7 @@ module ActiveRecord
         # Returns the statement identifier for the client side cache
         # of statements
         def sql_key(sql)
-          "#{schema_search_path}-#{sql}"
+          "#{sql}"
         end
 
         # Prepare the statement if it hasn't been prepared, return
@@ -747,7 +747,6 @@ module ActiveRecord
           if @config[:encoding]
             @connection.set_client_encoding(@config[:encoding])
           end
-          self.schema_search_path = @config[:schema_search_path] || @config[:schema_order]
 
           variables = @config.fetch(:variables, {}).stringify_keys
 

@@ -10,14 +10,17 @@ module DatabaseHelper
     File.dirname(__FILE__) << "/../database.yml"
   end
 
+  # Get random database id
   def database_id
     @database_id ||= "#{SecureRandom.hex(4)}"
   end
 
+  # Reset random database id
   def use_different_database
     @database_id = nil
   end
 
+  # Configuration hash
   def configuration_options(config_path = default_config_path, database: nil)
     config = YAML.load(ERB.new(File.read(config_path)).result)
     unless database.nil?
@@ -29,6 +32,12 @@ module DatabaseHelper
     config[ENV['RAILS_ENV']]
   end
 
+  # Get established connection
+  def connection
+    ActiveRecord::Base.connection
+  end
+
+  # Create Materailzie database
   def create_materialize(options = {})
     options = configuration_options['materialize']
       .merge('database' => database_id)
@@ -37,6 +46,7 @@ module DatabaseHelper
     ActiveRecord::Tasks::MaterializeDatabaseTasks.new(options).create
   end
 
+  # Drop Materialize database
   def drop_materialize(options = {})
     options = configuration_options['materialize']
       .merge('database' => database_id)
@@ -46,6 +56,7 @@ module DatabaseHelper
     # ignore
   end
 
+  # Establish connection with Materialzie database
   def with_materialize(options = {})
     materialize_id = "materialize_test#{database_id}"
     create_materialize({ 'database' => materialize_id })
@@ -61,6 +72,7 @@ module DatabaseHelper
     # ignore
   end
 
+  # Create Postgres database
   def create_pg(options = {})
     options = configuration_options['pg']
       .merge('database' => database_id)
@@ -69,6 +81,17 @@ module DatabaseHelper
     ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).create
   end
 
+  # Drop Postgres database
+  def drop_pg(options = {})
+    options = configuration_options['pg']
+      .merge('database' => database_id)
+      .merge(options)
+    ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).drop
+  rescue PG::ObjectInUse
+    # ignore
+  end
+
+  # Establish connection with Postgres
   def with_pg(options = {})
     pg_id = "pg_test#{database_id}"
     create_pg({ 'database' => pg_id })
@@ -84,15 +107,7 @@ module DatabaseHelper
     # ignore
   end
 
-  def drop_pg(options = {})
-    options = configuration_options['pg']
-      .merge('database' => database_id)
-      .merge(options)
-    ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).drop
-  rescue PG::ObjectInUse
-    # ignore
-  end
-
+  # Get SQL fixture
   def get_sql(fixture_filename)
     fixture_filename = fixture_filename.to_s
     fixture_filename = "#{fixture_filename}.sql" unless fixture_filename.include? '.sql'
