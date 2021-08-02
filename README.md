@@ -4,7 +4,7 @@
 [![Doc reference](https://img.shields.io/badge/doc-reference-orange)](https://materialize.com/docs)
 [![Chat on Slack](https://img.shields.io/badge/chat-on%20slack-purple)](https://materialize.com/s/chat)
 
-An ActiveRecord adapter to connect to Materialize databases.
+An ActiveRecord adapter to connect to Materialize databases.  The adapter includes support for materialized views as models supported by `ActiveRecord::Base`.  Support for typical relational database tables are also supported but secondary.
 
 Materialize is a streaming database for real-time applications. Materialize accepts input data from a variety of streaming sources (e.g. Kafka) and files (e.g. CSVs), and lets you query them using SQL.
 
@@ -30,6 +30,8 @@ Make sure you have the `pg` or a compatible gem installed.  Update your `databas
       database: "materialize_database_name"
       username: "materialize_user"
 ```
+
+*Gem is currently in an alpha state originally designed as a proof-of-concept.*
 
 
 ## Design

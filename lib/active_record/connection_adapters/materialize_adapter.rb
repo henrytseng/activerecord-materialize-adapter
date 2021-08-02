@@ -108,8 +108,8 @@ module ActiveRecord
         primary_key: "bigint",
         string:      { name: "character varying" },
         text:        { name: "text" },
-        integer:     { name: "integer", limit: 4 },
-        bigint:      { name: "int8", limit: 8 },
+        integer:     { name: "integer" },
+        bigint:      { name: "int8" },
         float:       { name: "float4" },
         double:      { name: "float8" },
         decimal:     { name: "decimal" },
@@ -137,31 +137,8 @@ module ActiveRecord
         true
       end
 
-      def supports_index_sort_order?
-        true
-      end
-
-      def supports_partitioned_indexes?
-        database_version >= 110_000
-      end
-
-      def supports_partial_index?
-        true
-      end
-
-      def supports_expression_index?
-        true
-      end
-
+      # TODO: test transaction isolation
       def supports_transaction_isolation?
-        true
-      end
-
-      def supports_foreign_keys?
-        true
-      end
-
-      def supports_validate_constraints?
         true
       end
 
@@ -169,35 +146,13 @@ module ActiveRecord
         true
       end
 
-      def supports_datetime_with_precision?
-        true
-      end
-
       def supports_json?
         true
       end
 
-      def supports_comments?
-        true
-      end
-
-      def supports_savepoints?
-        true
-      end
-
+      # TODO: test insert returning
       def supports_insert_returning?
         true
-      end
-
-      def supports_insert_on_conflict?
-        database_version >= 90500
-      end
-      alias supports_insert_on_duplicate_skip? supports_insert_on_conflict?
-      alias supports_insert_on_duplicate_update? supports_insert_on_conflict?
-      alias supports_insert_conflict_target? supports_insert_on_conflict?
-
-      def index_algorithms
-        { concurrently: "CONCURRENTLY" }
       end
 
       class StatementPool < ConnectionAdapters::StatementPool # :nodoc:
@@ -318,20 +273,12 @@ module ActiveRecord
         true
       end
 
-      def supports_extensions?
-        true
-      end
-
       def supports_ranges?
         true
       end
       deprecate :supports_ranges?
 
       def supports_materialized_views?
-        true
-      end
-
-      def supports_foreign_tables?
         true
       end
 
@@ -366,30 +313,6 @@ module ActiveRecord
           raise(ArgumentError, "Materialize requires advisory lock ids to be a signed 64 bit integer")
         end
         query_value("SELECT pg_advisory_unlock(#{lock_id})")
-      end
-
-      def enable_extension(name)
-        exec_query("CREATE EXTENSION IF NOT EXISTS \"#{name}\"").tap {
-          reload_type_map
-        }
-      end
-
-      def disable_extension(name)
-        exec_query("DROP EXTENSION IF EXISTS \"#{name}\" CASCADE").tap {
-          reload_type_map
-        }
-      end
-
-      def extension_available?(name)
-        query_value("SELECT true FROM pg_available_extensions WHERE name = #{quote(name)}", "SCHEMA")
-      end
-
-      def extension_enabled?(name)
-        query_value("SELECT installed_version IS NOT NULL FROM pg_available_extensions WHERE name = #{quote(name)}", "SCHEMA")
-      end
-
-      def extensions
-        exec_query("SELECT extname FROM pg_extension", "SCHEMA").cast_values
       end
 
       # Returns the configured supported identifier length supported by Materialize
@@ -487,10 +410,6 @@ module ActiveRecord
         end
 
         def get_oid_type(oid, fmod, column_name, sql_type = "")
-          if !type_map.key?(oid)
-            load_additional_types([oid])
-          end
-
           type_map.fetch(oid, fmod, sql_type) {
             warn "unknown OID #{oid}: failed to recognize type of '#{column_name}'. It will be treated as String."
             Type.default_value.tap do |cast_type|
@@ -503,40 +422,25 @@ module ActiveRecord
           m.register_type "int2", Type::Integer.new(limit: 2)
           m.register_type "int4", Type::Integer.new(limit: 4)
           m.register_type "int8", Type::Integer.new(limit: 8)
+          m.alias_type "int", "int4"
+          m.alias_type "integer", "int4"
+          m.alias_type "bigint", "int8"
           m.register_type "oid", OID::Oid.new
           m.register_type "float4", Type::Float.new
           m.alias_type "float8", "float4"
+          m.alias_type "double", "float4"
           m.register_type "text", Type::Text.new
-          register_class_with_limit m, "varchar", Type::String
-          m.alias_type "char", "varchar"
-          m.alias_type "name", "varchar"
-          m.alias_type "bpchar", "varchar"
-          m.register_type "bool", Type::Boolean.new
-          register_class_with_limit m, "bit", OID::Bit
-          register_class_with_limit m, "varbit", OID::BitVarying
+          m.alias_type "varchar", "text"
+
+          m.register_type "boolean", Type::Boolean.new
+          register_class_with_limit m, "bytea", OID::BitVarying
+
           m.alias_type "timestamptz", "timestamp"
           m.register_type "date", OID::Date.new
 
-          m.register_type "money", OID::Money.new
           m.register_type "bytea", OID::Bytea.new
-          m.register_type "point", OID::Point.new
-          m.register_type "hstore", OID::Hstore.new
-          m.register_type "json", Type::Json.new
           m.register_type "jsonb", OID::Jsonb.new
-          m.register_type "cidr", OID::Cidr.new
-          m.register_type "inet", OID::Inet.new
-          m.register_type "uuid", OID::Uuid.new
-          m.register_type "xml", OID::Xml.new
-          m.register_type "tsvector", OID::SpecializedString.new(:tsvector)
-          m.register_type "macaddr", OID::SpecializedString.new(:macaddr)
-          m.register_type "citext", OID::SpecializedString.new(:citext)
-          m.register_type "ltree", OID::SpecializedString.new(:ltree)
-          m.register_type "line", OID::SpecializedString.new(:line)
-          m.register_type "lseg", OID::SpecializedString.new(:lseg)
-          m.register_type "box", OID::SpecializedString.new(:box)
-          m.register_type "path", OID::SpecializedString.new(:path)
-          m.register_type "polygon", OID::SpecializedString.new(:polygon)
-          m.register_type "circle", OID::SpecializedString.new(:circle)
+          m.alias_type "json", "jsonb"
 
           m.register_type "interval" do |_, _, sql_type|
             precision = extract_precision(sql_type)
@@ -545,26 +449,6 @@ module ActiveRecord
 
           register_class_with_precision m, "time", Type::Time
           register_class_with_precision m, "timestamp", OID::DateTime
-
-          m.register_type "numeric" do |_, fmod, sql_type|
-            precision = extract_precision(sql_type)
-            scale = extract_scale(sql_type)
-
-            # The type for the numeric depends on the width of the field,
-            # so we'll do something special here.
-            #
-            # When dealing with decimal columns:
-            #
-            # places after decimal  = fmod - 4 & 0xffff
-            # places before decimal = (fmod - 4) >> 16 & 0xffff
-            if fmod && (fmod - 4 & 0xffff).zero?
-              # FIXME: Remove this class, and the second argument to
-              # lookups on PG
-              Type::DecimalWithoutScale.new(precision: precision)
-            else
-              OID::Decimal.new(precision: precision, scale: scale)
-            end
-          end
         end
 
         # Extracts the value from a Materialize column default definition.
@@ -600,26 +484,6 @@ module ActiveRecord
 
         def has_default_function?(default_value, default)
           !default_value && %r{\w+\(.*\)|\(.*\)::\w+|CURRENT_DATE|CURRENT_TIMESTAMP}.match?(default)
-        end
-
-        def load_additional_types(oids = nil)
-          initializer = OID::TypeMapInitializer.new(type_map)
-
-          query = <<~SQL
-            SELECT t.oid, t.typname, t.typelem, t.typinput, r.rngsubtype, t.typtype, t.typbasetype
-            FROM pg_type as t
-            LEFT JOIN pg_range as r ON oid = rngtypid
-          SQL
-
-          if oids
-            query += "WHERE t.oid IN (%s)" % oids.join(", ")
-          else
-            query += initializer.query_conditions_for_initial_load
-          end
-
-          execute_and_clear(query, "SCHEMA", []) do |records|
-            initializer.run(records)
-          end
         end
 
         FEATURE_NOT_SUPPORTED = "0A000" #:nodoc:
@@ -792,16 +656,20 @@ module ActiveRecord
         #  - ::regclass is a function that gives the id for a table name
         def column_definitions(table_name)
           query(<<~SQL, "SCHEMA")
-              SELECT a.attname, format_type(a.atttypid, a.atttypmod),
-                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod,
-                     c.collname, col_description(a.attrelid, a.attnum) AS comment
-                FROM pg_attribute a
-                LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
-                LEFT JOIN pg_type t ON a.atttypid = t.oid
-                LEFT JOIN pg_collation c ON a.attcollation = c.oid AND a.attcollation <> t.typcollation
-               WHERE a.attrelid = #{quote(quote_table_name(table_name))}::regclass
-                 AND a.attnum > 0 AND NOT a.attisdropped
-               ORDER BY a.attnum
+          SELECT
+            c.name,
+            c.type AS format_type,
+            c.nullable,
+            NULL AS default,
+            NULL AS comment
+          FROM mz_columns c
+          LEFT JOIN mz_tables t ON c.id = t.id
+          LEFT JOIN mz_schemas s ON t.schema_id = s.id
+          LEFT JOIN mz_databases d ON s.database_id = d.id
+          WHERE
+            t.name = #{quote(table_name)}
+            AND d.name = #{quote(current_database)}
+            ORDER BY c.position
           SQL
         end
 
@@ -868,10 +736,15 @@ module ActiveRecord
             "int2" => PG::TextDecoder::Integer,
             "int4" => PG::TextDecoder::Integer,
             "int8" => PG::TextDecoder::Integer,
+            "integer" => PG::TextDecoder::Integer,
+            "bigint" => PG::TextDecoder::Integer,
             "oid" => PG::TextDecoder::Integer,
+            "float" => PG::TextDecoder::Float,
             "float4" => PG::TextDecoder::Float,
             "float8" => PG::TextDecoder::Float,
+            "double" => PG::TextDecoder::Float,
             "bool" => PG::TextDecoder::Boolean,
+            "boolean" => PG::TextDecoder::Boolean,
           }
 
           if defined?(PG::TextDecoder::TimestampUtc)
@@ -907,24 +780,12 @@ module ActiveRecord
         end
 
         ActiveRecord::Type.add_modifier({ array: true }, OID::Array, adapter: :materialize)
-        ActiveRecord::Type.add_modifier({ range: true }, OID::Range, adapter: :materialize)
-        ActiveRecord::Type.register(:bit, OID::Bit, adapter: :materialize)
-        ActiveRecord::Type.register(:bit_varying, OID::BitVarying, adapter: :materialize)
         ActiveRecord::Type.register(:binary, OID::Bytea, adapter: :materialize)
-        ActiveRecord::Type.register(:cidr, OID::Cidr, adapter: :materialize)
         ActiveRecord::Type.register(:date, OID::Date, adapter: :materialize)
         ActiveRecord::Type.register(:datetime, OID::DateTime, adapter: :materialize)
         ActiveRecord::Type.register(:decimal, OID::Decimal, adapter: :materialize)
         ActiveRecord::Type.register(:enum, OID::Enum, adapter: :materialize)
-        ActiveRecord::Type.register(:hstore, OID::Hstore, adapter: :materialize)
-        ActiveRecord::Type.register(:inet, OID::Inet, adapter: :materialize)
         ActiveRecord::Type.register(:jsonb, OID::Jsonb, adapter: :materialize)
-        ActiveRecord::Type.register(:money, OID::Money, adapter: :materialize)
-        ActiveRecord::Type.register(:point, OID::Point, adapter: :materialize)
-        ActiveRecord::Type.register(:legacy_point, OID::LegacyPoint, adapter: :materialize)
-        ActiveRecord::Type.register(:uuid, OID::Uuid, adapter: :materialize)
-        ActiveRecord::Type.register(:vector, OID::Vector, adapter: :materialize)
-        ActiveRecord::Type.register(:xml, OID::Xml, adapter: :materialize)
     end
   end
 end

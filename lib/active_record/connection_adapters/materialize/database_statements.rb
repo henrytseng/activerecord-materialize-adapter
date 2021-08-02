@@ -112,6 +112,8 @@ module ActiveRecord
             fields.each_with_index do |fname, i|
               ftype = result.ftype i
               fmod  = result.fmod i
+
+              # TODO remove unsupported look up
               types[fname] = get_oid_type(ftype, fmod, fname)
             end
             ActiveRecord::Result.new(fields, result.values, types)

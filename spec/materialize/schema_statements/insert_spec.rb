@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Column" do
+describe "Insert" do
   around(:each) do |example|
     with_materialize do |config|
       connection.create_table('sed') do |t|
@@ -11,8 +11,8 @@ describe "Column" do
     end
   end
 
-  context "column names" do
-    it "should list" do
+  context 'when building insert' do
+    it "should build insert with types" do
       binding.pry
     end
   end

@@ -174,10 +174,7 @@ module ActiveRecord
         # :call-seq: xml(*names, **options)
 
         included do
-          define_column_methods :bigserial, :bit, :bit_varying, :cidr, :citext, :daterange,
-            :hstore, :inet, :interval, :int4range, :int8range, :jsonb, :ltree, :macaddr,
-            :money, :numrange, :oid, :point, :line, :lseg, :box, :path, :polygon, :circle,
-            :serial, :tsrange, :tstzrange, :tsvector, :uuid, :xml
+          define_column_methods :bigint, :bit, :bit_varying, :interval, :jsonb, :oid
         end
       end
 
@@ -194,9 +191,9 @@ module ActiveRecord
         private
           def integer_like_primary_key_type(type, options)
             if type == :bigint || options[:limit] == 8
-              :bigserial
+              :bigint
             else
-              :serial
+              :integer
             end
           end
       end

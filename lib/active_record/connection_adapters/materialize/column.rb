@@ -6,15 +6,6 @@ module ActiveRecord
       class Column < ActiveRecord::ConnectionAdapters::Column # :nodoc:
         delegate :oid, :fmod, to: :sql_type_metadata
 
-        def initialize(*, serial: nil, **)
-          super
-          @serial = serial
-        end
-
-        def serial?
-          @serial
-        end
-
         def array
           sql_type_metadata.sql_type.end_with?("[]")
         end

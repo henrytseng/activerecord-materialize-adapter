@@ -42,7 +42,7 @@ module DatabaseHelper
     options = configuration_options['materialize']
       .merge('database' => database_id)
       .merge(options)
-    ActiveRecord::Base.logger = ActiveSupport::Logger.new("logs/debug.log")
+    ActiveRecord::Base.logger = ActiveSupport::Logger.new("log/debug.log")
     ActiveRecord::Tasks::MaterializeDatabaseTasks.new(options).create
   end
 
@@ -77,7 +77,7 @@ module DatabaseHelper
     options = configuration_options['pg']
       .merge('database' => database_id)
       .merge(options)
-    ActiveRecord::Base.logger = ActiveSupport::Logger.new("logs/debug.log")
+    ActiveRecord::Base.logger = ActiveSupport::Logger.new("log/debug.log")
     ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(options).create
   end
 

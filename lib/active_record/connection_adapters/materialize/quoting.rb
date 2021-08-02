@@ -116,14 +116,8 @@ module ActiveRecord
         private_constant :COLUMN_NAME, :COLUMN_NAME_WITH_ORDER
 
         private
-          def lookup_cast_type(sql_type)
-            super(query_value("SELECT #{quote(sql_type)}::regtype::oid", "SCHEMA").to_i)
-          end
-
           def _quote(value)
             case value
-            when OID::Xml::Data
-              "xml '#{quote_string(value.to_s)}'"
             when OID::Bit::Data
               if value.binary?
                 "B'#{value}'"
@@ -152,7 +146,7 @@ module ActiveRecord
               # See https://deveiate.org/code/pg/PG/Connection.html#method-i-exec_prepared-doc
               # for more information
               { value: value.to_s, format: 1 }
-            when OID::Xml::Data, OID::Bit::Data
+            when OID::Bit::Data
               value.to_s
             when OID::Array::Data
               encode_array(value)

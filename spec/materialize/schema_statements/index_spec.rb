@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "SchemaStatements" do
+describe "Index" do
   around(:each) do |example|
     with_materialize do |config|
       connection.create_table :foo do |t|
@@ -32,9 +32,15 @@ describe "SchemaStatements" do
     end
   end
 
-  context "when supporting primary key" do
+  context "when supporting primary key compatability" do
     it "should return a valid primary key sequence name minimally" do
       expect(connection.default_sequence_name(:foo)).to eq "foo_id_seq"
+    end
+
+    it "should get a list of primary keys" do
+      expect(connection.primary_keys(:foo)).to eq ['id', 'name', 'category']
+      connection.add_index(:foo, [:id, :name], name: :foobar)
+      expect(connection.primary_keys(:foo)).to eq ['id', 'name', 'category']
     end
   end
 end

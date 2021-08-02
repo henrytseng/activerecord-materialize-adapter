@@ -5,71 +5,36 @@ module ActiveRecord
     module Materialize
       class SchemaCreation < AbstractAdapter::SchemaCreation # :nodoc:
         private
-          def visit_AlterTable(o)
-            super << o.constraint_validations.map { |fk| visit_ValidateConstraint fk }.join(" ")
-          end
+          def visit_TableDefinition(o)
+            create_sql = +"CREATE#{table_modifier_in_create(o)} TABLE "
+            create_sql << "IF NOT EXISTS " if o.if_not_exists
+            create_sql << "#{quote_table_name(o.name)} "
 
-          def visit_AddForeignKey(o)
-            super.dup.tap { |sql| sql << " NOT VALID" unless o.validate? }
-          end
+            statements = o.columns.map { |c| accept c }
 
-          def visit_ValidateConstraint(name)
-            "VALIDATE CONSTRAINT #{quote_column_name(name)}"
-          end
-
-          def visit_ChangeColumnDefinition(o)
-            column = o.column
-            column.sql_type = type_to_sql(column.type, **column.options)
-            quoted_column_name = quote_column_name(o.name)
-
-            change_column_sql = +"ALTER COLUMN #{quoted_column_name} TYPE #{column.sql_type}"
-
-            options = column_options(column)
-
-            if options[:collation]
-              change_column_sql << " COLLATE \"#{options[:collation]}\""
+            if supports_indexes_in_create?
+              statements.concat(o.indexes.map { |column_name, options| index_in_create(o.name, column_name, options) })
             end
 
-            if options[:using]
-              change_column_sql << " USING #{options[:using]}"
-            elsif options[:cast_as]
-              cast_as_type = type_to_sql(options[:cast_as], **options)
-              change_column_sql << " USING CAST(#{quoted_column_name} AS #{cast_as_type})"
+            if supports_foreign_keys?
+              statements.concat(o.foreign_keys.map { |to_table, options| foreign_key_in_create(o.name, to_table, options) })
             end
 
-            if options.key?(:default)
-              if options[:default].nil?
-                change_column_sql << ", ALTER COLUMN #{quoted_column_name} DROP DEFAULT"
-              else
-                quoted_default = quote_default_expression(options[:default], column)
-                change_column_sql << ", ALTER COLUMN #{quoted_column_name} SET DEFAULT #{quoted_default}"
-              end
-            end
-
-            if options.key?(:null)
-              change_column_sql << ", ALTER COLUMN #{quoted_column_name} #{options[:null] ? 'DROP' : 'SET'} NOT NULL"
-            end
-
-            change_column_sql
+            create_sql << "(#{statements.join(', ')})" if statements.present?
+            add_table_options!(create_sql, table_options(o))
+            create_sql << " AS #{to_sql(o.as)}" if o.as
+            create_sql
           end
 
           def add_column_options!(sql, options)
-            if options[:collation]
-              sql << " COLLATE \"#{options[:collation]}\""
+            sql << " DEFAULT #{quote_default_expression(options[:default], options[:column])}" if options_include_default?(options)
+            # must explicitly check for :null to allow change_column to work on migrations
+            if options[:null] == false
+              sql << " NOT NULL"
             end
-            super
+            sql
           end
 
-          # Returns any SQL string to go between CREATE and TABLE. May be nil.
-          def table_modifier_in_create(o)
-            # A table cannot be both TEMPORARY and UNLOGGED, since all TEMPORARY
-            # tables are already UNLOGGED.
-            if o.temporary
-              " TEMPORARY"
-            elsif o.unlogged
-              " UNLOGGED"
-            end
-          end
       end
     end
   end
