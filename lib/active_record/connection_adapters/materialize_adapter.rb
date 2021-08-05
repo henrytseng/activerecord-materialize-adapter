@@ -200,7 +200,6 @@ module ActiveRecord
         @type_map = Type::HashLookupTypeMap.new
         initialize_type_map
         @local_tz = execute("SHOW TIMEZONE", "SCHEMA").first["TimeZone"]
-        @use_insert_returning = @config.key?(:insert_returning) ? self.class.type_cast_config_to_boolean(@config[:insert_returning]) : true
       end
 
       def self.database_exists?(config)
@@ -282,10 +281,6 @@ module ActiveRecord
         true
       end
 
-      def supports_pgcrypto_uuid?
-        database_version >= 90400
-      end
-
       def supports_optimizer_hints?
         unless defined?(@has_pg_hint_plan)
           @has_pg_hint_plan = extension_available?("pg_hint_plan")
@@ -324,10 +319,6 @@ module ActiveRecord
       def session_auth=(user)
         clear_cache!
         execute("SET SESSION AUTHORIZATION #{user}")
-      end
-
-      def use_insert_returning?
-        @use_insert_returning
       end
 
       def column_name_for_operation(operation, node) # :nodoc:
@@ -550,13 +541,12 @@ module ActiveRecord
           parametrized_statement = sql.split(/\s+/)
           binds.each_with_index do |n, i|
             index = i + 1
-
-
-            # TODO add proper quoting
-
-            part = n.is_a?(String) ? "'#{quote_string(n)}'" : n.to_s
-
-
+            part = case n
+                   when String
+                     "'#{quote_string(n)}'"
+                   when Numeric
+                     n.to_s
+                   end
 
             parametrized_statement = parametrized_statement.map do |token|
               token

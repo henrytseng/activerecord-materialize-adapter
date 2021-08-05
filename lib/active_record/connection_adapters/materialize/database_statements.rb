@@ -70,7 +70,7 @@ module ActiveRecord
         end
 
         READ_QUERY = ActiveRecord::ConnectionAdapters::AbstractAdapter.build_read_query_regexp(
-          :begin, :commit, :explain, :select, :set, :show, :release, :savepoint, :rollback, :with
+          :begin, :commit, :explain, :select, :set, :show, :rollback, :with
         ) # :nodoc:
         private_constant :READ_QUERY
 
@@ -136,24 +136,6 @@ module ActiveRecord
         end
         private :sql_for_insert
 
-        def exec_insert(sql, name = nil, binds = [], pk = nil, sequence_name = nil)
-          if use_insert_returning? || pk == false
-            super
-          else
-            result = exec_query(sql, name, binds)
-            unless sequence_name
-              table_ref = extract_table_ref_from_insert_sql(sql)
-              if table_ref
-                pk = primary_key(table_ref) if pk.nil?
-                pk = suppress_composite_primary_key(pk)
-                sequence_name = default_sequence_name(table_ref, pk)
-              end
-              return result unless sequence_name
-            end
-            last_insert_id_result(sequence_name)
-          end
-        end
-
         # Begins a transaction.
         def begin_db_transaction
           execute "BEGIN"
@@ -181,11 +163,6 @@ module ActiveRecord
 
           def build_truncate_statements(table_names)
             ["TRUNCATE TABLE #{table_names.map(&method(:quote_table_name)).join(", ")}"]
-          end
-
-          # Returns the current ID of a table's sequence.
-          def last_insert_id_result(sequence_name)
-            exec_query("SELECT currval(#{quote(sequence_name)})", "SQL")
           end
 
           def suppress_composite_primary_key(pk)

@@ -28,11 +28,10 @@ describe "SchemaDumper" do
 
       # Rebuild
       eval schema
-      binding.pry
+
       schema_by_schema = StringIO.new.tap do |s|
         ActiveRecord::SchemaDumper.dump(connection, s)
       end.string
-
       expect(schema_by_schema).to eq(schema)
     end
   end
@@ -98,8 +97,12 @@ class CreateDogMigration < ActiveRecord::Migration::Current
 
     create_table("dogs") do |t|
       t.column :name, :string
+      t.column :nickname, :string, nullable: true
+      t.datetime :birthdate, nullable: true, default: 'now()'
+      t.column :identification_tag, :bytea, nullable: false
       t.integer :owner_id
       t.index [:name]
+      t.timestamps
     end
   end
   def down

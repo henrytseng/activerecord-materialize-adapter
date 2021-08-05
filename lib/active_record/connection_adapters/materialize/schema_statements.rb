@@ -342,7 +342,7 @@ module ActiveRecord
               column_name,
               default_value,
               type_metadata,
-              !nullable,
+              nullable,
               default_function,
               comment: comment.presence
             )

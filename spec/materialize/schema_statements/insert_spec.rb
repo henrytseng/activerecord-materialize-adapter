@@ -13,7 +13,6 @@ describe "Insert" do
 
   context 'when building insert' do
     it "should build insert with types" do
-      binding.pry
     end
   end
 end
