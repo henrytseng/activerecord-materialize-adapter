@@ -4,9 +4,7 @@ describe "Database" do
   context "sanity checks" do
     it "should create other databases without conflict" do
       with_pg do |config|
-        response = connection.execute "select version();"
-        result = response.values.first
-        expect(result.first).not_to include "materialized"
+        expect(connection.query_value("select version()")).not_to include "materialized"
       end
     end
 
@@ -22,9 +20,16 @@ describe "Database" do
         result = response.first['now'].try :to_s
         expect(result.length).not_to be 0
 
-        response = connection.execute "select version();"
-        result = response.values.first
-        expect(result.first).to include "materialized"
+        expect(connection.query_value("select version()")).to include "materialized"
+      end
+    end
+
+    it "should handled nested connections" do
+      with_materialize do |config|
+        expect(connection.query_value("select version()")).to include "materialized"
+        with_pg do |config|
+          expect(connection.query_value("select version()")).not_to include "materialized"
+        end
       end
     end
   end
@@ -62,7 +67,7 @@ describe "Database" do
       end
     end
 
-    it "should not get current database" do
+    it "should get current database from config" do
       with_materialize do |config|
         connection.create_database(config['database'])
         expect(connection.current_database).to eq config['database']

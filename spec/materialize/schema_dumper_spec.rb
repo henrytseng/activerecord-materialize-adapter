@@ -10,6 +10,7 @@ describe "SchemaDumper" do
   context "with tables" do
     around(:each) do |example|
       with_materialize do |config|
+        ActiveRecord::InternalMetadata.create_table
         example.run
       end
     end
@@ -25,10 +26,9 @@ describe "SchemaDumper" do
       # Remove
       migration.migrate(:down)
 
-
       # Rebuild
-      binding.pry
       eval schema
+      binding.pry
       schema_by_schema = StringIO.new.tap do |s|
         ActiveRecord::SchemaDumper.dump(connection, s)
       end.string
@@ -54,7 +54,6 @@ describe "SchemaDumper" do
         Factory.establish_connection config
         Product.establish_connection config
         Transaction.establish_connection config
-        binding.pry
       end
 
       with_materialize do |config|

@@ -495,10 +495,8 @@ module ActiveRecord
 
           if without_prepared_statement?(binds)
             result = exec_no_cache(sql, name, [])
-          elsif !prepare
-            result = exec_no_cache(sql, name, binds)
           else
-            result = exec_cache(sql, name, binds)
+            result = exec_no_cache(sql, name, binds)
           end
           ret = yield result
           result.clear
@@ -512,39 +510,11 @@ module ActiveRecord
           # made since we established the connection
           update_typemap_for_default_timezone
 
-          type_casted_binds = type_casted_binds(binds)
-          log(sql, name, binds, type_casted_binds) do
+          typed_binds = type_casted_binds(binds)
+          log(sql, name, binds, typed_binds) do
             ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
-              @connection.exec_params(sql, type_casted_binds)
+              @connection.exec_params(prepare_statement(sql, typed_binds), [])
             end
-          end
-        end
-
-        def exec_cache(sql, name, binds)
-          materialize_transactions
-          update_typemap_for_default_timezone
-
-          stmt_key = prepare_statement(sql, binds)
-          type_casted_binds = type_casted_binds(binds)
-
-          log(sql, name, binds, type_casted_binds, stmt_key) do
-            ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
-              @connection.exec_prepared(stmt_key, type_casted_binds)
-            end
-          end
-        rescue ActiveRecord::StatementInvalid => e
-          raise unless is_cached_plan_failure?(e)
-
-          # Nothing we can do if we are in a transaction because all commands
-          # will raise InFailedSQLTransaction
-          if in_transaction?
-            raise ActiveRecord::PreparedStatementCacheExpired.new(e.cause.message)
-          else
-            @lock.synchronize do
-              # outside of transactions we can simply flush this query and retry
-              @statements.delete sql_key(sql)
-            end
-            retry
           end
         end
 
@@ -576,24 +546,30 @@ module ActiveRecord
           "#{sql}"
         end
 
-        # Prepare the statement if it hasn't been prepared, return
-        # the statement key.
         def prepare_statement(sql, binds)
-          @lock.synchronize do
-            sql_key = sql_key(sql)
-            unless @statements.key? sql_key
-              nextkey = @statements.next_key
-              begin
-                @connection.prepare nextkey, sql
-              rescue => e
-                raise translate_exception_class(e, sql, binds)
-              end
-              # Clear the queue
-              @connection.get_last_result
-              @statements[sql_key] = nextkey
+          parametrized_statement = sql.split(/\s+/)
+          binds.each_with_index do |n, i|
+            index = i + 1
+
+
+            # TODO add proper quoting
+
+            part = n.is_a?(String) ? "'#{quote_string(n)}'" : n.to_s
+
+
+
+            parametrized_statement = parametrized_statement.map do |token|
+              token
+                .gsub("$#{index}", part)
+                .gsub("($#{index}", "(#{part}")
+                .gsub("$#{index})", "#{part})")
+                .gsub("($#{index})", "(#{part})")
+                .gsub(",$#{index}", ",#{part}")
+                .gsub("$#{index},", "#{part},")
+                .gsub(",$#{index},", ",#{part},")
             end
-            @statements[sql_key]
           end
+          parametrized_statement.join ' '
         end
 
         # Connects to a Materialize server and sets up the adapter depending on the

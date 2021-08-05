@@ -40,7 +40,7 @@ module ActiveRecord
 
         # Returns true if schema exists.
         def schema_exists?(name)
-          query_value("SELECT COUNT(*) FROM pg_namespace WHERE nspname = #{quote(name)}", "SCHEMA").to_i > 0
+          schema_names.include? name.to_s
         end
 
         # Verifies existence of an index with a given name.
@@ -122,12 +122,13 @@ module ActiveRecord
 
         # Returns an array of schema names.
         def schema_names
-          query_values(<<~SQL, "SCHEMA").uniq
-            SELECT nspname
-              FROM pg_namespace
-             WHERE nspname !~ '^(pg_|mz_).*'
-               AND nspname NOT IN ('information_schema')
-             ORDER by nspname;
+          query_values(<<~SQL, "SCHEMA")
+            SELECT
+              s.name
+            FROM mz_schemas s
+            LEFT JOIN mz_databases d ON s.database_id = d.id
+            WHERE
+              d.name = #{quote(current_database)}
           SQL
         end
 
@@ -172,11 +173,6 @@ module ActiveRecord
             rename_index(new_name, "#{table_name}_primary_idx", "#{new_name}_primary_idx")
           end
           rename_table_indexes(table_name, new_name)
-        end
-
-        #  Query tables
-        def tables
-          query_values("SHOW TABLES")
         end
 
         # https://materialize.com/docs/sql/alter-rename/
@@ -434,12 +430,19 @@ module ActiveRecord
 
           def data_source_sql(name = nil, type: nil)
             scope = quoted_scope(name, type: type)
-            scope[:type] ||= "'r','v','m','p','f'" # (r)elation/table, (v)iew, (m)aterialized view, (p)artitioned table, (f)oreign table
-
-            sql = +"SELECT c.relname FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace"
-            sql << " WHERE n.nspname = #{scope[:schema]}"
-            sql << " AND c.relname = #{scope[:name]}" if scope[:name]
-            sql << " AND c.relkind IN (#{scope[:type]})"
+            scope[:type] ||= "'table','view','source'"
+            sql = <<~SQL
+              SELECT
+                o.name
+              FROM mz_objects o
+              LEFT JOIN mz_schemas s ON o.schema_id = s.id
+              LEFT JOIN mz_databases d ON s.database_id = d.id
+              WHERE
+                d.name = #{quote(current_database)}
+                AND s.name =  #{scope[:schema]}
+                AND o.type IN (#{scope[:type]})
+            SQL
+            sql += " AND o.name = #{scope[:name]}" if scope[:name]
             sql
           end
 
@@ -448,11 +451,13 @@ module ActiveRecord
             type = \
               case type
               when "BASE TABLE"
-                "'r','p'"
+                "'table','source'"
+              when "TABLE"
+                "'table'"
+              when "SOURCE"
+                "'source'"
               when "VIEW"
-                "'v','m'"
-              when "FOREIGN TABLE"
-                "'f'"
+                "'view'"
               end
             scope = {}
             scope[:schema] = schema ? quote(schema) : "ANY (current_schemas(false))"

@@ -29,9 +29,31 @@ describe "Schema" do
     it "should create and drop schema" do
       connection.create_schema(:dolor)
       expect(connection.schema_exists?(:dolor)).to be_truthy
-
       connection.drop_schema(:dolor)
       expect(connection.schema_exists?(:dolor)).to be_falsy
+    end
+  end
+
+  context "when schema namespaces exist" do
+    it "should define unique namespaces for schemas" do
+      connection.create_schema(:lorem)
+      connection.create_schema(:ipsum)
+
+      connection.create_table('lorem.sed') do |t|
+        t.string :name
+        t.integer :quantity
+      end
+      connection.create_table('ipsum.sed') do |t|
+        t.string :kind
+        t.integer :price
+      end
+
+      expect(connection.schema_names.sort).to eq ['ipsum', 'lorem', 'public']
+      with_materialize do |config|
+        connection.create_schema(:quox)
+        expect(connection.schema_names.sort).to eq ['public', 'quox']
+      end
+      expect(connection.schema_names.sort).to eq ['ipsum', 'lorem', 'public']
     end
   end
 end

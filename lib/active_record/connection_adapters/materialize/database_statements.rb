@@ -132,10 +132,6 @@ module ActiveRecord
             pk = primary_key(table_ref) if table_ref
           end
 
-          if pk = suppress_composite_primary_key(pk)
-            sql = "#{sql} RETURNING #{quote_column_name(pk)}"
-          end
-
           super
         end
         private :sql_for_insert

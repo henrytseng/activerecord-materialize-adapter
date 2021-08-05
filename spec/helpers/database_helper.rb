@@ -34,7 +34,21 @@ module DatabaseHelper
 
   # Get established connection
   def connection
-    ActiveRecord::Base.connection
+    @connection
+  end
+
+  # Uses a stack to store multiple connections
+  def with_configuration(config)
+    @configuration_stack ||= []
+    @configuration_stack.push config
+    ActiveRecord::Base.establish_connection config
+    @connection = ActiveRecord::Base.connection
+    yield config
+    @configuration_stack.pop
+    unless @configuration_stack.empty?
+      ActiveRecord::Base.establish_connection @configuration_stack.last
+      @connection = ActiveRecord::Base.connection
+    end
   end
 
   # Create Materailzie database
@@ -58,14 +72,16 @@ module DatabaseHelper
 
   # Establish connection with Materialzie database
   def with_materialize(options = {})
+    result = nil
     materialize_id = "materialize_test#{database_id}"
     create_materialize({ 'database' => materialize_id })
     config = configuration_options['materialize']
       .merge('database' => materialize_id)
       .merge(options)
-    ActiveRecord::Base.establish_connection config
-    result = yield config
     use_different_database
+    with_configuration(config) do
+      result = yield config
+    end
     at_exit { drop_materialize({ 'database' => materialize_id }) }
     result
   rescue PG::ObjectInUse
@@ -93,14 +109,16 @@ module DatabaseHelper
 
   # Establish connection with Postgres
   def with_pg(options = {})
+    result = nil
     pg_id = "pg_test#{database_id}"
     create_pg({ 'database' => pg_id })
     config = configuration_options['pg']
       .merge('database' => pg_id)
       .merge(options)
-    ActiveRecord::Base.establish_connection config
-    result = yield config
     use_different_database
+    with_configuration(config) do
+      result = yield config
+    end
     at_exit { drop_pg({ 'database' => pg_id }) }
     result
   rescue PG::ObjectInUse
