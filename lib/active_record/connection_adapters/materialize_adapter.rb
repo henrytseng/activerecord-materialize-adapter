@@ -541,12 +541,13 @@ module ActiveRecord
           parametrized_statement = sql.split(/\s+/)
           binds.each_with_index do |n, i|
             index = i + 1
-            part = case n
-                   when String
-                     "'#{quote_string(n)}'"
-                   when Numeric
-                     n.to_s
-                   end
+            part = \
+              case n
+              when String
+                "'#{quote_string(n)}'"
+              when Numeric
+                n.to_s
+              end
 
             parametrized_statement = parametrized_statement.map do |token|
               token

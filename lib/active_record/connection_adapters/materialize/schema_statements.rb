@@ -175,6 +175,15 @@ module ActiveRecord
           rename_table_indexes(table_name, new_name)
         end
 
+        def sources
+          query_values(data_source_sql(type: "SOURCE"), "SCHEMA")
+        end
+
+        # Returns an array of view names defined in the database.
+        def materialized_views
+          query_values(data_source_sql(type: "MATERIALIZED"), "SCHEMA")
+        end
+
         # https://materialize.com/docs/sql/alter-rename/
         def add_column(table_name, column_name, type, **options) #:nodoc:
           clear_cache!
@@ -249,7 +258,6 @@ module ActiveRecord
         end
 
         # Maps logical Rails types to Materialize-specific data types.
-
         def type_to_sql(type, limit: nil, precision: nil, scale: nil, **) # :nodoc:
           type = type.to_sym if type
           if native = native_database_types[type]
@@ -430,19 +438,34 @@ module ActiveRecord
 
           def data_source_sql(name = nil, type: nil)
             scope = quoted_scope(name, type: type)
-            scope[:type] ||= "'table','view','source'"
+            scope[:type] ||= "'table','view'"
             sql = <<~SQL
               SELECT
                 o.name
               FROM mz_objects o
               LEFT JOIN mz_schemas s ON o.schema_id = s.id
               LEFT JOIN mz_databases d ON s.database_id = d.id
+              LEFT JOIN mz_sources src ON src.id = o.id
+              LEFT JOIN mz_indexes i ON i.on_id = o.id
               WHERE
                 d.name = #{quote(current_database)}
                 AND s.name =  #{scope[:schema]}
                 AND o.type IN (#{scope[:type]})
             SQL
+
+            # Sources
+            sql += " AND src.id is NULL" unless scope[:type].include? 'source'
+
+            # Find with name
             sql += " AND o.name = #{scope[:name]}" if scope[:name]
+
+            sql += " GROUP BY o.id, o.name"
+            if type == "MATERIALIZED"
+              sql += " HAVING COUNT(i.id) > 0"
+            elsif scope[:type].include?('view')
+              sql += " HAVING COUNT(i.id) = 0"
+            end
+
             sql
           end
 
@@ -451,9 +474,9 @@ module ActiveRecord
             type = \
               case type
               when "BASE TABLE"
-                "'table','source'"
-              when "TABLE"
                 "'table'"
+              when "MATERIALIZED"
+                "'view'"
               when "SOURCE"
                 "'source'"
               when "VIEW"
