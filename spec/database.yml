@@ -4,8 +4,8 @@ test:
     host: postgresdb
     port: 5432
     username: postgres
+    password: <%= ENV['POSTGRES_PASSWORD'] %>
     database: materialize_adapter_test
-
   materialize:
     adapter: materialize
     host: "materializedb"

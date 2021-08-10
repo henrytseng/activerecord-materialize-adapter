@@ -107,6 +107,14 @@ module DatabaseHelper
     # ignore
   end
 
+  # Removes all publications
+  def drop_publications
+    publications = connection.query_values('SELECT pubname FROM pg_publication')
+    publications.each do |publication_name|
+      connection.execute("DROP PUBLICATION IF EXISTS #{publication_name}")
+    end
+  end
+
   # Establish connection with Postgres
   def with_pg(options = {})
     result = nil
@@ -119,7 +127,12 @@ module DatabaseHelper
     with_configuration(config) do
       result = yield config
     end
-    at_exit { drop_pg({ 'database' => pg_id }) }
+    at_exit do
+      with_configuration(config) do
+        drop_publications
+      end
+      drop_pg({ 'database' => pg_id })
+    end
     result
   rescue PG::ObjectInUse
     # ignore

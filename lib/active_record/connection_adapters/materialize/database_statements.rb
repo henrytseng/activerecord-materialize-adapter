@@ -11,9 +11,9 @@ module ActiveRecord
           Materialize::ExplainPrettyPrinter.new.pp(exec_query(sql, "EXPLAIN", binds))
         end
 
-        # The internal Materialize identifier of the money data type.
+        # The internal PostgreSQL identifier of the money data type.
         MONEY_COLUMN_TYPE_OID = 790 #:nodoc:
-        # The internal Materialize identifier of the BYTEA data type.
+        # The internal PostgreSQL identifier of the BYTEA data type.
         BYTEA_COLUMN_TYPE_OID = 17 #:nodoc:
 
         # create a 2D array representing the result set

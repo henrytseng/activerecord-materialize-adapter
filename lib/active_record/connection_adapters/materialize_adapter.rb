@@ -29,6 +29,8 @@ require "active_record/connection_adapters/materialize/schema_creation"
 require "active_record/connection_adapters/materialize/schema_definitions"
 require "active_record/connection_adapters/materialize/schema_dumper"
 require "active_record/connection_adapters/materialize/schema_statements"
+require "active_record/connection_adapters/materialize/schema/source_statements"
+require "active_record/connection_adapters/materialize/schema/view_statements"
 require "active_record/connection_adapters/materialize/type_metadata"
 require "active_record/connection_adapters/materialize/utils"
 require "active_record/tasks/materialize_database_tasks"
@@ -132,6 +134,8 @@ module ActiveRecord
       include Materialize::ReferentialIntegrity
       include Materialize::SchemaStatements
       include Materialize::DatabaseStatements
+      include Materialize::Schema::SourceStatements
+      include Materialize::Schema::ViewStatements
 
       def supports_bulk_alter?
         true

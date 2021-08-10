@@ -36,11 +36,11 @@ describe "SchemaDumper" do
     end
   end
 
-  context "with materialized views" do
+  context "with materialized views and source tables" do
     around(:each) do |example|
-      source_database = nil
+      source_config = nil
       with_pg do |config|
-        source_database = config["database"]
+        source_config = config
         [
           "factory/create_factories",
           "factory/create_products",
@@ -56,12 +56,14 @@ describe "SchemaDumper" do
       end
 
       with_materialize do |config|
-        # Create sourced
-        connection.execute <<~SQL.squish
-          CREATE MATERIALIZED SOURCE "product_transaction" FROM POSTGRES
-            CONNECTION 'host=postgresdb port=5432 user=postgres dbname=#{source_database}'
-            PUBLICATION 'product_transaction'
-        SQL
+        # Create source
+        # connection.execute <<~SQL.squish
+        #   CREATE MATERIALIZED SOURCE "product_transaction" FROM POSTGRES
+        #     CONNECTION 'host=postgresdb port=5432 user=postgres dbname=#{source_database}'
+        #     PUBLICATION 'product_transaction'
+        # SQL
+
+        connection.create_source "product_transaction", source_type: :postgres, publication: "product_transaction", connection_params: source_config
 
         # Create a view from source
         connection.execute 'CREATE VIEWS FROM SOURCE "product_transaction" ("products", "factories", "transactions");'
@@ -69,7 +71,8 @@ describe "SchemaDumper" do
         # Create aggregated view
         [
           "factory/create_product_totals",
-          "factory/create_factory_totals"
+          "factory/create_factory_totals",
+          "factory/create_tags"
         ].each { |s| connection.execute get_sql(s) }
 
         example.run
@@ -85,6 +88,10 @@ describe "SchemaDumper" do
     end
 
     it "should create idempotent schema dump" do
+      schema = StringIO.new.tap do |s|
+        ActiveRecord::SchemaDumper.dump(connection, s)
+      end.string
+
       binding.pry
     end
   end

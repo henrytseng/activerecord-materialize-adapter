@@ -9,9 +9,9 @@ require 'models/factory_total'
 
 describe "Create source" do
   it "should create a source" do
-    source_database = nil
+    source_config = nil
     with_pg do |config|
-      source_database = config["database"]
+      source_config = config
       [
         "factory/create_factories",
         "factory/create_products",
@@ -30,9 +30,9 @@ describe "Create source" do
       # Create sourced
       connection.execute <<~SQL.squish
         CREATE MATERIALIZED SOURCE "product_transaction" FROM POSTGRES
-          CONNECTION 'host=postgresdb port=5432 user=postgres dbname=#{source_database}'
+          CONNECTION 'host=postgresdb port=5432 user=postgres password=#{source_config["password"]} dbname=#{source_config["database"]}'
           PUBLICATION 'product_transaction'
-      SQL
+        SQL
 
       # Create a view from source
       connection.execute 'CREATE VIEWS FROM SOURCE "product_transaction" ("products", "factories", "transactions");'
@@ -52,10 +52,6 @@ describe "Create source" do
         "factory/drop_product_totals",
         "factory/drop_factory_totals"
       ].each { |s| connection.execute get_sql(s) }
-    end
-
-    with_pg({ 'database' => source_database }) do |config|
-      connection.execute get_sql("factory/drop_publication")
     end
   end
 end

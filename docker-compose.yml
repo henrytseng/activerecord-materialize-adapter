@@ -6,6 +6,7 @@ services:
     container_name: adapter
     environment:
       - RAILS_ENV=test
+      - POSTGRES_PASSWORD=mysecretpassword
     depends_on:
       - postgresdb
       - materializedb
@@ -23,6 +24,7 @@ services:
     container_name: postgresdb
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_PASSWORD=mysecretpassword
     ports:
       - "5432:5432"
     volumes:

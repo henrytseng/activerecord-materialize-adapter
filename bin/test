@@ -6,4 +6,4 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd $SCRIPT_DIR/..
 
 [ ! -d ".bundle" ] && docker-compose run adapter bundle install
-docker-compose run adapter bundle exec rspec --order rand $@
+docker-compose run --rm adapter bundle exec rspec --order rand $@

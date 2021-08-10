@@ -175,15 +175,6 @@ module ActiveRecord
           rename_table_indexes(table_name, new_name)
         end
 
-        def sources
-          query_values(data_source_sql(type: "SOURCE"), "SCHEMA")
-        end
-
-        # Returns an array of view names defined in the database.
-        def materialized_views
-          query_values(data_source_sql(type: "MATERIALIZED"), "SCHEMA")
-        end
-
         # https://materialize.com/docs/sql/alter-rename/
         def add_column(table_name, column_name, type, **options) #:nodoc:
           clear_cache!
