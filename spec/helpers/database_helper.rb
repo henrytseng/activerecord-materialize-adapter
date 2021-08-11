@@ -70,6 +70,21 @@ module DatabaseHelper
     # ignore
   end
 
+  # Disconnect all sources
+  def drop_sources
+    sources = connection.query_values <<-SQL.squish
+      SELECT
+        s.name
+      FROM mz_sources s
+        LEFT JOIN mz_schemas sch ON s.schema_id = sch.id
+        LEFT JOIN mz_databases d ON sch.database_id = d.id
+      WHERE s.connector_type = 'postgres'
+    SQL
+    sources.each do |source_name|
+      connection.execute "DROP SOURCE IF EXISTS #{source_name} CASCADE"
+    end
+  end
+
   # Establish connection with Materialzie database
   def with_materialize(options = {})
     result = nil
@@ -79,10 +94,15 @@ module DatabaseHelper
       .merge('database' => materialize_id)
       .merge(options)
     use_different_database
+    before_cleanup do
+      with_configuration(config) do
+        drop_sources
+      end
+      drop_materialize({ 'database' => materialize_id })
+    end
     with_configuration(config) do
       result = yield config
     end
-    at_exit { drop_materialize({ 'database' => materialize_id }) }
     result
   rescue PG::ObjectInUse
     # ignore
@@ -127,7 +147,7 @@ module DatabaseHelper
     with_configuration(config) do
       result = yield config
     end
-    at_exit do
+    after_cleanup do
       with_configuration(config) do
         drop_publications
       end

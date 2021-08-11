@@ -511,6 +511,12 @@ module ActiveRecord
               @connection.exec_params(prepare_statement(sql, typed_binds), [])
             end
           end
+        rescue ActiveRecord::StatementInvalid => error
+          if error.message.include? "At least one input has no complete timestamps yet"
+            raise ::Materialize::Errors::IncompleteInput, error.message
+          else
+            raise
+          end
         end
 
         # Annoyingly, the code for prepared statements whose return value may

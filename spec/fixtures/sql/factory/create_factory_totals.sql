@@ -1,5 +1,6 @@
 CREATE MATERIALIZED VIEW factory_totals AS
   SELECT
+    f.id as id,
     f.id as factory_id,
     f.name as factory_name,
     sum(t.quantity * t.price) as total

@@ -64,7 +64,9 @@ module ActiveRecord
 
           log(sql, name) do
             ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
-              result_as_array @connection.async_exec(sql)
+              Retriable.retriable(tries: 3, on: ::Materialize::Errors::IncompleteInput) do
+                result_as_array execute_async(sql)
+              end
             end
           end
         end
@@ -91,37 +93,34 @@ module ActiveRecord
 
           log(sql, name) do
             ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
-              @connection.async_exec(sql)
+              Retriable.retriable(tries: 3, on: ::Materialize::Errors::IncompleteInput) do
+                execute_async(sql)
+              end
             end
-          end
-
-        # Known issue: PG::InternalError: ERROR:  At least one input has no complete timestamps yet
-        # https://github.com/MaterializeInc/materialize/issues/2917
-        rescue ActiveRecord::StatementInvalid => error
-          if error.message.include? "At least one input has no complete timestamps yet"
-            raise ::Materialize::Errors::IncompleteInput, error.message
-          else
-            raise
           end
         end
 
         def exec_query(sql, name = "SQL", binds = [], prepare: false)
-          execute_and_clear(sql, name, binds, prepare: prepare) do |result|
-            types = {}
-            fields = result.fields
-            fields.each_with_index do |fname, i|
-              ftype = result.ftype i
-              fmod  = result.fmod i
+          Retriable.retriable(tries: 3, on: ::Materialize::Errors::IncompleteInput) do
+            execute_and_clear(sql, name, binds, prepare: prepare) do |result|
+              types = {}
+              fields = result.fields
+              fields.each_with_index do |fname, i|
+                ftype = result.ftype i
+                fmod  = result.fmod i
 
-              # TODO remove unsupported look up
-              types[fname] = get_oid_type(ftype, fmod, fname)
+                # TODO remove unsupported look up
+                types[fname] = get_oid_type(ftype, fmod, fname)
+              end
+              ActiveRecord::Result.new(fields, result.values, types)
             end
-            ActiveRecord::Result.new(fields, result.values, types)
           end
         end
 
         def exec_delete(sql, name = nil, binds = [])
-          execute_and_clear(sql, name, binds) { |result| result.cmd_tuples }
+          Retriable.retriable(tries: 3, on: ::Materialize::Errors::IncompleteInput) do
+            execute_and_clear(sql, name, binds) { |result| result.cmd_tuples }
+          end
         end
         alias :exec_update :exec_delete
 
@@ -157,6 +156,19 @@ module ActiveRecord
         end
 
         private
+          # Known issue: PG::InternalError: ERROR:  At least one input has no complete timestamps yet
+          # https://github.com/MaterializeInc/materialize/issues/2917
+          def execute_async(sql)
+            @connection.async_exec(sql)
+          rescue PG::InternalError => error
+            if error.message.include? "At least one input has no complete timestamps yet"
+              raise ::Materialize::Errors::IncompleteInput, error.message
+            else
+              raise
+            end
+          end
+
+
           def execute_batch(statements, name = nil)
             execute(combine_multi_statements(statements))
           end

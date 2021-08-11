@@ -45,6 +45,22 @@ describe "Create source" do
       ProductTotal.establish_connection config
       FactoryTotal.establish_connection config
 
+      binding.pry
+
+      product_id = ProductTotal.last.product_id
+      transaction_total = Transaction.where(product_id: product_id).map { |t| t.quantity * t.price }.sum
+      expect(transaction_total).to eq ProductTotal.find_by(product_id: product_id).total
+
+      binding.pry
+
+
+      transaction = Transaction.create(product_id: product_id, quantity: 1, price: 5, buyer: 'additional_txn')
+      transaction_total2 = Transaction.where(product_id: product_id).map { |t| t.quantity * t.price }.sum
+      expect(Transaction.connection.class).to eq ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
+      expect(ProductTotal.connection.class).to eq ActiveRecord::ConnectionAdapters::MaterializeAdapter
+      expect(transaction_total2).to eq ProductTotal.find_by(product_id: product_id).total
+      expect(transaction_total2).to be(transaction_total + 5)
+
       # Clean up
       ProductTotal.connection.close
       FactoryTotal.connection.close
