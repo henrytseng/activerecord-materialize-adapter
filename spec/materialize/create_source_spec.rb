@@ -51,18 +51,20 @@ describe "Create source" do
       # expect(total).to eq ProductTotal.find_by(product_id: product_id).total
 
       # Create new data item
-      1000.times do |n|
-        tx = Transaction.create(product_id: product_id, quantity: 1, price: 5, buyer: 'additional_txn')
+      Transaction.transaction do
+        1000.times do |n|
+          Transaction.create(product_id: product_id, quantity: 1, price: 5, buyer: 'additional_txn')
+        end
       end
 
       # Sanity self check (caching-timing)
-      await_replication(source_config)
       total_after = Transaction.where(product_id: product_id).map { |t| t.quantity * t.price }.sum
       expect(total_after).to be(total + 5000)
       expect(Transaction.connection.class).to eq ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
       expect(ProductTotal.connection.class).to eq ActiveRecord::ConnectionAdapters::MaterializeAdapter
 
-      # Check after
+      # Check materialized after
+      await_replication(source_config)
       expect(ProductTotal.find_by(product_id: product_id).total).to eq total_after
 
       # Clean up
