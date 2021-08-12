@@ -4,6 +4,7 @@ require 'securerandom'
 require "active_record/tasks/database_tasks"
 require "active_record/connection_adapters/materialize_adapter"
 require "active_record/tasks/postgresql_database_tasks"
+require 'retriable'
 
 module DatabaseHelper
   def default_config_path
@@ -43,12 +44,15 @@ module DatabaseHelper
     @configuration_stack.push config
     ActiveRecord::Base.establish_connection config
     @connection = ActiveRecord::Base.connection
-    yield config
+    result = yield config
     @configuration_stack.pop
     unless @configuration_stack.empty?
       ActiveRecord::Base.establish_connection @configuration_stack.last
       @connection = ActiveRecord::Base.connection
     end
+    result
+  rescue PG::ObjectInUse
+    # ignore
   end
 
   # Create Materailzie database
@@ -132,6 +136,23 @@ module DatabaseHelper
     publications = connection.query_values('SELECT pubname FROM pg_publication')
     publications.each do |publication_name|
       connection.execute("DROP PUBLICATION IF EXISTS #{publication_name}")
+    end
+  end
+
+  # Wait for replication to catch up - with backoff
+  def await_replication(options = {})
+    Retriable.retriable(tries: 20, on: RuntimeError) do
+      with_configuration(options) do
+        slot = replication_slot(options)
+        raise 'Not ready yet' unless slot['restart_lsn'] == slot['confirmed_flush_lsn']
+      end
+    end
+  end
+
+  # Get first replication slot on Postgres
+  def replication_slot(options = {})
+    with_configuration(options) do
+      connection.execute("SELECT * FROM pg_replication_slots WHERE database = '#{options['database']}'").first
     end
   end
 

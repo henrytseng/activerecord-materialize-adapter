@@ -62,13 +62,13 @@ module ActiveRecord
         def query(sql, name = nil) #:nodoc:
           materialize_transactions
 
+          result = nil
           log(sql, name) do
             ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
-              Retriable.retriable(tries: 3, on: ::Materialize::Errors::IncompleteInput) do
-                result_as_array execute_async(sql)
-              end
+              result = execute_async_and_raise(sql)
             end
           end
+          result_as_array result
         end
 
         READ_QUERY = ActiveRecord::ConnectionAdapters::AbstractAdapter.build_read_query_regexp(
@@ -91,36 +91,32 @@ module ActiveRecord
 
           materialize_transactions
 
+          result = nil
           log(sql, name) do
             ActiveSupport::Dependencies.interlock.permit_concurrent_loads do
-              Retriable.retriable(tries: 3, on: ::Materialize::Errors::IncompleteInput) do
-                execute_async(sql)
-              end
+              result = execute_async_and_raise(sql)
             end
           end
+          result
         end
 
         def exec_query(sql, name = "SQL", binds = [], prepare: false)
-          Retriable.retriable(tries: 3, on: ::Materialize::Errors::IncompleteInput) do
-            execute_and_clear(sql, name, binds, prepare: prepare) do |result|
-              types = {}
-              fields = result.fields
-              fields.each_with_index do |fname, i|
-                ftype = result.ftype i
-                fmod  = result.fmod i
+          execute_and_clear(sql, name, binds, prepare: prepare) do |result|
+            types = {}
+            fields = result.fields
+            fields.each_with_index do |fname, i|
+              ftype = result.ftype i
+              fmod  = result.fmod i
 
-                # TODO remove unsupported look up
-                types[fname] = get_oid_type(ftype, fmod, fname)
-              end
-              ActiveRecord::Result.new(fields, result.values, types)
+              # TODO remove unsupported look up
+              types[fname] = get_oid_type(ftype, fmod, fname)
             end
+            ActiveRecord::Result.new(fields, result.values, types)
           end
         end
 
         def exec_delete(sql, name = nil, binds = [])
-          Retriable.retriable(tries: 3, on: ::Materialize::Errors::IncompleteInput) do
-            execute_and_clear(sql, name, binds) { |result| result.cmd_tuples }
-          end
+          execute_and_clear(sql, name, binds) { |result| result.cmd_tuples }
         end
         alias :exec_update :exec_delete
 
@@ -158,7 +154,7 @@ module ActiveRecord
         private
           # Known issue: PG::InternalError: ERROR:  At least one input has no complete timestamps yet
           # https://github.com/MaterializeInc/materialize/issues/2917
-          def execute_async(sql)
+          def execute_async_and_raise(sql)
             @connection.async_exec(sql)
           rescue PG::InternalError => error
             if error.message.include? "At least one input has no complete timestamps yet"

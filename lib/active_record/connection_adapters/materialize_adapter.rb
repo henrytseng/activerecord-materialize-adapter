@@ -34,6 +34,7 @@ require "active_record/connection_adapters/materialize/schema/view_statements"
 require "active_record/connection_adapters/materialize/type_metadata"
 require "active_record/connection_adapters/materialize/utils"
 require "active_record/tasks/materialize_database_tasks"
+require 'materialize/errors/incomplete_input'
 
 module ActiveRecord
   module ConnectionHandling # :nodoc:
@@ -511,7 +512,8 @@ module ActiveRecord
               @connection.exec_params(prepare_statement(sql, typed_binds), [])
             end
           end
-        rescue ActiveRecord::StatementInvalid => error
+        rescue ActiveRecord::StatementInvalid,
+               PG::InternalError => error
           if error.message.include? "At least one input has no complete timestamps yet"
             raise ::Materialize::Errors::IncompleteInput, error.message
           else

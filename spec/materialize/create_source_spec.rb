@@ -45,21 +45,25 @@ describe "Create source" do
       ProductTotal.establish_connection config
       FactoryTotal.establish_connection config
 
-      binding.pry
+      # Check data has propogated
+      product_id = Product.last.id
+      total = Transaction.where(product_id: product_id).map { |t| t.quantity * t.price }.sum
+      # expect(total).to eq ProductTotal.find_by(product_id: product_id).total
 
-      product_id = ProductTotal.last.product_id
-      transaction_total = Transaction.where(product_id: product_id).map { |t| t.quantity * t.price }.sum
-      expect(transaction_total).to eq ProductTotal.find_by(product_id: product_id).total
+      # Create new data item
+      1000.times do |n|
+        tx = Transaction.create(product_id: product_id, quantity: 1, price: 5, buyer: 'additional_txn')
+      end
 
-      binding.pry
-
-
-      transaction = Transaction.create(product_id: product_id, quantity: 1, price: 5, buyer: 'additional_txn')
-      transaction_total2 = Transaction.where(product_id: product_id).map { |t| t.quantity * t.price }.sum
+      # Sanity self check (caching-timing)
+      await_replication(source_config)
+      total_after = Transaction.where(product_id: product_id).map { |t| t.quantity * t.price }.sum
+      expect(total_after).to be(total + 5000)
       expect(Transaction.connection.class).to eq ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
       expect(ProductTotal.connection.class).to eq ActiveRecord::ConnectionAdapters::MaterializeAdapter
-      expect(transaction_total2).to eq ProductTotal.find_by(product_id: product_id).total
-      expect(transaction_total2).to be(transaction_total + 5)
+
+      # Check after
+      expect(ProductTotal.find_by(product_id: product_id).total).to eq total_after
 
       # Clean up
       ProductTotal.connection.close
