@@ -108,7 +108,6 @@ module ActiveRecord
               ftype = result.ftype i
               fmod  = result.fmod i
 
-              # TODO remove unsupported look up
               types[fname] = get_oid_type(ftype, fmod, fname)
             end
             ActiveRecord::Result.new(fields, result.values, types)
@@ -163,7 +162,6 @@ module ActiveRecord
               raise
             end
           end
-
 
           def execute_batch(statements, name = nil)
             execute(combine_multi_statements(statements))

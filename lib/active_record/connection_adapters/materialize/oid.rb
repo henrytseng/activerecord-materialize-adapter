@@ -11,6 +11,7 @@ require "active_record/connection_adapters/materialize/oid/decimal"
 require "active_record/connection_adapters/materialize/oid/enum"
 require "active_record/connection_adapters/materialize/oid/jsonb"
 require "active_record/connection_adapters/materialize/oid/oid"
+require "active_record/connection_adapters/materialize/oid/type_map_initializer"
 
 module ActiveRecord
   module ConnectionAdapters

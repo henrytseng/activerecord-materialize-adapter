@@ -144,7 +144,7 @@ module DatabaseHelper
     Retriable.retriable(tries: 20, on: RuntimeError) do
       with_configuration(options) do
         slot = replication_slot(options)
-        raise 'Not ready yet' unless slot['restart_lsn'] == slot['confirmed_flush_lsn']
+        raise 'Not ready yet' unless slot && slot['restart_lsn'] == slot['confirmed_flush_lsn']
       end
     end
   end

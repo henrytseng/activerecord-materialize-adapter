@@ -28,11 +28,7 @@ describe "Create source" do
 
     with_materialize do |config|
       # Create sourced
-      connection.execute <<~SQL.squish
-        CREATE MATERIALIZED SOURCE "product_transaction" FROM POSTGRES
-          CONNECTION 'host=postgresdb port=5432 user=postgres password=#{source_config["password"]} dbname=#{source_config["database"]}'
-          PUBLICATION 'product_transaction'
-        SQL
+      connection.create_source "product_transaction", source_type: :postgres, publication: "product_transaction", connection_params: source_config
 
       # Create a view from source
       connection.execute 'CREATE VIEWS FROM SOURCE "product_transaction" ("products", "factories", "transactions");'

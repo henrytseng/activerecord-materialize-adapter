@@ -29,23 +29,22 @@ module ActiveRecord
           # "host=postgresdb port=5432 user=postgres dbname=source_database"
           def select_database_config(connection_params)
             {
-              host: connection_params[:host],
-              port: connection_params[:port],
-              user: connection_params[:username],
-              dbname: connection_params[:database],
-              password: connection_params[:password]
+              host: connection_params['host'],
+              port: connection_params['port'],
+              user: connection_params['username'],
+              dbname: connection_params['database'],
+              password: connection_params['password']
             }.compact
           end
 
           def create_source(source_name, publication:, source_type: :postgres, materialized: true, connection_params: nil)
             materialized_statement = materialized ? 'MATERIALIZED ' : ''
-            connection_string = select_database_config(connection_params)
-            binding.pry
+            connection_string = select_database_config(connection_params).map { |k, v| [k, v].join("=") }.join(" ")
             case source_type
             when :postgres
               execute <<-SQL.squish
                 CREATE #{materialized_statement}SOURCE #{quote_schema_name(source_name)} FROM POSTGRES
-                  CONNECTION '#{connection_string}'
+                  CONNECTION #{quote(connection_string)}
                   PUBLICATION #{quote(publication)}
               SQL
             else

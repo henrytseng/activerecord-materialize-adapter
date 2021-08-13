@@ -406,12 +406,39 @@ module ActiveRecord
         end
 
         def get_oid_type(oid, fmod, column_name, sql_type = "")
+          if !type_map.key?(oid)
+            load_additional_types([oid])
+          end
+
           type_map.fetch(oid, fmod, sql_type) {
             warn "unknown OID #{oid}: failed to recognize type of '#{column_name}'. It will be treated as String."
             Type.default_value.tap do |cast_type|
               type_map.register_type(oid, cast_type)
             end
           }
+        end
+
+        def load_additional_types(oids = nil)
+          initializer = OID::TypeMapInitializer.new(type_map)
+
+          query = <<~SQL
+            SELECT t.id, t.oid, t.schema_id, t.name
+            FROM mz_types as t
+            LEFT JOIN mz_schemas s ON t.schema_id = s.id
+            LEFT JOIN mz_databases d ON s.database_id = d.id
+            WHERE
+              d.name = #{quote(current_database)}
+          SQL
+
+          if oids
+            query += "AND t.oid IN (%s)" % oids.join(", ")
+          else
+            query += initializer.query_conditions_for_initial_load
+          end
+
+          execute_and_clear(query, "SCHEMA", []) do |records|
+            initializer.run(records)
+          end
         end
 
         def initialize_type_map(m = type_map)
@@ -445,6 +472,8 @@ module ActiveRecord
 
           register_class_with_precision m, "time", Type::Time
           register_class_with_precision m, "timestamp", OID::DateTime
+
+          load_additional_types
         end
 
         # Extracts the value from a Materialize column default definition.
