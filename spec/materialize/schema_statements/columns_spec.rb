@@ -16,7 +16,7 @@ describe "Column" do
   context "column names" do
     it "should list" do
       expect(columns.map { |c| c.name }).to eq ['id', 'name', 'quantity']
-      expect(columns.map { |c| c.type }).to eq [:integer, :integer, :text]
+      expect(columns.map { |c| c.type }).to eq [:integer, :text, :integer]
     end
   end
 end

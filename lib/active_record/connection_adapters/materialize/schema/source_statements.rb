@@ -19,6 +19,8 @@ module ActiveRecord
              source_type = source_type.to_s.downcase.to_sym
 
             {
+              database_name: database_name,
+              schema_name: schema_name,
               source_name: source_name,
               source_type: source_type,
               publication: publication_name,
