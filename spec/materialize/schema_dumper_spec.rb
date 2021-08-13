@@ -92,7 +92,6 @@ describe "SchemaDumper" do
         ActiveRecord::SchemaDumper.dump(connection, s)
       end.string
 
-      binding.pry
     end
   end
 end
