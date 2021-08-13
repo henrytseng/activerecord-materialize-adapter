@@ -81,7 +81,7 @@ module ActiveRecord
               .map do |index|
                 "    t.index #{index_parts(index).join(', ')}"
               end
-            stream.puts index_statements.sort.join("\n")
+            stream.puts index_statements.sort.join("\n") if index_statements.present?
           end
         end
 
