@@ -11,9 +11,12 @@ describe "Column" do
     end
   end
 
+  let(:columns) { connection.columns(:sed) }
+
   context "column names" do
     it "should list" do
-      binding.pry
+      expect(columns.map { |c| c.name }).to eq ['id', 'name', 'quantity']
+      expect(columns.map { |c| c.type }).to eq [:integer, :integer, :text]
     end
   end
 end

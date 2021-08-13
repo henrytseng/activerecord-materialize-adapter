@@ -24,8 +24,6 @@ module ActiveRecord
           sorted_views.each do |view_name|
             view(view_name, stream)
           end
-
-          binding.pry
         end
 
         # Create source
