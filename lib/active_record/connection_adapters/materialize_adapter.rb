@@ -427,7 +427,7 @@ module ActiveRecord
             LEFT JOIN mz_schemas s ON t.schema_id = s.id
             LEFT JOIN mz_databases d ON s.database_id = d.id
             WHERE
-              d.name = #{quote(current_database)}
+              (d.name = #{quote(current_database)} OR s.name = 'pg_catalog')
           SQL
 
           if oids
