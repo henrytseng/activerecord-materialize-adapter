@@ -155,7 +155,8 @@ module ActiveRecord
           # https://github.com/MaterializeInc/materialize/issues/2917
           def execute_async_and_raise(sql)
             @connection.async_exec(sql)
-          rescue PG::InternalError => error
+          rescue PG::SqlStatementNotYetComplete,
+                 PG::InternalError => error
             if error.message.include? "At least one input has no complete timestamps yet"
               raise ::Materialize::Errors::IncompleteInput, error.message
             else

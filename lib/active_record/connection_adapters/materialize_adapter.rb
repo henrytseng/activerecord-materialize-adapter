@@ -544,6 +544,7 @@ module ActiveRecord
             end
           end
         rescue ActiveRecord::StatementInvalid,
+               PG::SqlStatementNotYetComplete,
                PG::InternalError => error
           if error.message.include? "At least one input has no complete timestamps yet"
             raise ::Materialize::Errors::IncompleteInput, error.message
