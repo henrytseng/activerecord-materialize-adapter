@@ -454,6 +454,7 @@ module ActiveRecord
           m.alias_type "double", "float4"
           m.register_type "text", Type::Text.new
           m.alias_type "varchar", "text"
+          m.alias_type "character varying", "text"
 
           m.register_type "boolean", Type::Boolean.new
           register_class_with_limit m, "bytea", OID::BitVarying
