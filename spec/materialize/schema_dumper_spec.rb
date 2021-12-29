@@ -92,6 +92,20 @@ describe "SchemaDumper" do
         ActiveRecord::SchemaDumper.dump(connection, s)
       end.string
 
+      # TODO Remove tables created with statements
+      [
+        "factory/drop_tags",
+        "factory/drop_product_totals",
+        "factory/drop_factory_totals"
+      ].each { |s| connection.execute get_sql(s) }
+
+
+      # TODO Evaluate schema
+
+      # TODO Check schema
+
+      # TODO Check no database configuration is left in schema.rb
+
     end
   end
 end

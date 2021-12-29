@@ -77,7 +77,7 @@ module ActiveRecord
         def indexes_in_create(table, stream)
           if (indexes = @connection.indexes(table)).any?
             index_statements = indexes
-              .select { |index| !index.name.include?("_primary_idx") }
+              .reject { |index| index.name.include?("_primary_idx") }
               .map do |index|
                 "    t.index #{index_parts(index).join(', ')}"
               end
