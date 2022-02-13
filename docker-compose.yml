@@ -34,7 +34,7 @@ services:
       - default
 
   materializedb:
-    image: materialize/materialized:v0.13.0
+    image: materialize/materialized:v0.19.0
     container_name: materializedb
     ports:
       - "6875:6875"
