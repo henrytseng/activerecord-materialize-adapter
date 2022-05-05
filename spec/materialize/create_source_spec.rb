@@ -41,7 +41,7 @@ describe "Create source" do
       ProductTotal.establish_connection config
       FactoryTotal.establish_connection config
 
-      # Check data has propogated
+      # Check data has propagated
       product_id = Product.last.id
       total = Transaction.where(product_id: product_id).map { |t| t.quantity * t.price }.sum
       # expect(total).to eq ProductTotal.find_by(product_id: product_id).total
